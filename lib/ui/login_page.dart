@@ -8,6 +8,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _visible = false;
+
+  void _visiblePassword() {
+    setState(() {
+      _visible = !_visible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,11 +33,25 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(label: Text('Digite o seu Email')),
               keyboardType: TextInputType.emailAddress,
             ),
-            TextField(
-              decoration: InputDecoration(
-                label: Text('Digite a sua Senha'),
-              ),
-              keyboardType: TextInputType.visiblePassword,
+            Stack(
+              alignment: Alignment.centerRight,
+              children: [
+                TextField(
+                  decoration: InputDecoration(
+                    label: Text('Digite a sua Senha'),
+                  ),
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: _visible,
+                ),
+                IconButton(
+                  onPressed: () {
+                    _visiblePassword();
+                  },
+                  icon: Icon(
+                    _visible ? Icons.visibility : Icons.visibility_off,
+                  ),
+                ),
+              ],
             ),
             Container(
               padding: EdgeInsets.only(top: 20.0),

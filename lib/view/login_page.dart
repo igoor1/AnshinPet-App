@@ -1,5 +1,7 @@
+import 'package:anshinpet/res/components/round_buton.dart';
+import 'package:anshinpet/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:anshinpet/ui/home_page.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,32 +11,21 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool _visible = false;
-
-  void _login(context) {
-    setState(() {
-      String email = emailController.text;
-      String password = passwordController.text;
-
-      if (email == "email@123" && password == "123") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-      } else {
-        final snack = SnackBar(
-          content: Text("Erro - Email ou Senha Incorretos"),
-          duration: Duration(seconds: 2),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snack);
-      }
-    });
-  }
+  bool _visible = true;
 
   void _visiblePassword() {
     setState(() {
@@ -44,6 +35,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authViewMode = Provider.of<AuthViewModel>(context);
+    final height = MediaQuery.of(context).size.height * 1;
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
@@ -60,11 +53,12 @@ class _LoginPageState extends State<LoginPage> {
               TextFormField(
                 decoration: InputDecoration(label: Text('Digite o seu Email')),
                 keyboardType: TextInputType.emailAddress,
-                controller: emailController,
+                controller: _emailController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Insira o Email";
                   }
+                  return null;
                 },
               ),
               Stack(
@@ -75,12 +69,13 @@ class _LoginPageState extends State<LoginPage> {
                       label: Text('Digite a sua Senha'),
                     ),
                     keyboardType: TextInputType.visiblePassword,
-                    controller: passwordController,
+                    controller: _passwordController,
                     obscureText: _visible,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Insira a Senha";
                       }
+                      return null;
                     },
                   ),
                   IconButton(
@@ -93,16 +88,19 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              Container(
-                padding: EdgeInsets.only(top: 20.0),
-                child: FloatingActionButton(
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      _login(context);
-                    }
-                  },
-                  child: Text("Entrar"),
-                ),
+              SizedBox(height: height * .085),
+              RoundButton(
+                title: 'Entrar', 
+                loading: authViewMode.loading,
+                onPress: (){
+                  if (_formKey.currentState?.validate() ?? false) {
+                    Map data = {
+                      'email': _emailController.text.toString(),
+                      'senha': _passwordController.text.toString()
+                    };
+                    authViewMode.loginApi(data, context);
+                  }
+                }
               ),
             ],
           ),

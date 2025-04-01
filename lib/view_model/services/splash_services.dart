@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 
 class SplashServices {
 
-  Future<TokenModel> getUserDate() => TokenViewModel().getUser();
+  Future<TokenModel> getUserDate() => TokenViewModel().getToken();
 
   void checkAuthentication(BuildContext context) async {
 
-    TokenViewModel().getUser().then((value){
+    TokenViewModel().getToken().then((value){
 
       if(value.token == 'null' || value.token == ''){
         Timer(const Duration(seconds: 3),

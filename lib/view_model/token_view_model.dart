@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenViewModel with ChangeNotifier {
 
-  Future<bool> saveUser(TokenModel user) async {
+  Future<bool> saveToken(TokenModel user) async {
 
     final SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString('token', user.token.toString()); 
@@ -12,7 +12,7 @@ class TokenViewModel with ChangeNotifier {
     return true;
   }
 
-  Future<TokenModel> getUser() async {
+  Future<TokenModel> getToken() async {
 
     final SharedPreferences sp = await SharedPreferences.getInstance();
     final String? token = sp.getString('token');

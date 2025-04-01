@@ -1,7 +1,9 @@
 import 'package:anshinpet/repository/auth_repository.dart';
 import 'package:anshinpet/configs/routes/routes_name.dart';
+import 'package:anshinpet/view_model/token_view_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AuthViewModel with ChangeNotifier {
 
@@ -16,10 +18,12 @@ class AuthViewModel with ChangeNotifier {
   }
 
   Future<void> loginApi(dynamic data, BuildContext context) async {
+    setLoading(false);
     try{
-      setLoading(true);
       var value = await _authRepo.loginApi(data);
-      setLoading(false);
+      final tokenValue = Provider.of<TokenViewModel>(context, listen: false);
+      tokenValue.saveToken(value);     
+
       Navigator.pushNamed(context, RoutesName.home);
       if (kDebugMode) print(value.toString());
     }catch (e) {

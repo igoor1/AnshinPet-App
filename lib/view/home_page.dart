@@ -1,12 +1,19 @@
+import 'package:anshinpet/res/components/appbar_custom.dart';
+import 'package:anshinpet/res/components/bottom_navigation_bar_custom.dart';
 import 'package:flutter/material.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:anshinpet/res/components/drawer_custom.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final List<ChartData> chartData = [
@@ -16,52 +23,51 @@ class HomePage extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        actions: [Image.asset('images/logo_minimal.png')],
-        actionsPadding: EdgeInsets.fromLTRB(0, 5, 15, 2),
-        iconTheme: IconThemeData(color: Color.fromRGBO(124, 84, 217, 1)),
-      ),
-      drawer: DrawerCustom(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text("Animais"),
-            Center(
-              child: Container(
-                  width: 500,
-                  height: 250,
-                  child: SfCartesianChart(
-                      primaryXAxis: CategoryAxis(),
-                      series: <CartesianSeries<ChartData, String>>[
-                        ColumnSeries<ChartData, String>(
-                          color: Color.fromRGBO(124, 84, 217, 1),
-                          dataSource: chartData,
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y,
-                          dataLabelSettings: DataLabelSettings(isVisible: true),
-                        ),
-                      ])),
-            ),
-            Row(
-              children: [
-                Expanded(child: CardBuilder("Animais", "12")),
-                Expanded(
-                  child: CardBuilder("Cuidadores", "2"),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: CardBuilder("Ração", "28.2 kg"),
-                ),
-                Expanded(child: CardBuilder("Doações", "R\$: 209")),
-              ],
-            )
-          ],
+        appBar: AppbarCustom(),
+        drawer: DrawerCustom(),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text("Animais"),
+              Center(
+                child: Container(
+                    width: 500,
+                    height: 250,
+                    child: SfCartesianChart(
+                        primaryXAxis: CategoryAxis(),
+                        series: <CartesianSeries<ChartData, String>>[
+                          ColumnSeries<ChartData, String>(
+                            color: Color.fromRGBO(124, 84, 217, 1),
+                            dataSource: chartData,
+                            xValueMapper: (ChartData data, _) => data.x,
+                            yValueMapper: (ChartData data, _) => data.y,
+                            dataLabelSettings:
+                                DataLabelSettings(isVisible: true),
+                          ),
+                        ])),
+              ),
+              Row(
+                children: [
+                  Expanded(child: CardBuilder("Animais", "12")),
+                  Expanded(
+                    child: CardBuilder("Cuidadores", "2"),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: CardBuilder("Ração", "28.2 kg"),
+                  ),
+                  Expanded(child: CardBuilder("Doações", "R\$: 209")),
+                ],
+              )
+            ],
+          ),
         ),
-      ),
-    );
+        bottomNavigationBar: BottomNavigationBarCustom(
+          valueIndex: 1,
+        ));
   }
 
   Widget CardBuilder(title, value) {

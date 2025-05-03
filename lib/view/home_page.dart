@@ -1,39 +1,53 @@
 import 'package:anshinpet/res/components/appbar_custom.dart';
 import 'package:anshinpet/res/components/bottom_navigation_bar_custom.dart';
+import 'package:anshinpet/view_model/home_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:anshinpet/res/components/drawer_custom.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
   Widget build(BuildContext context) {
-    final List<ChartData> chartData = [
-      ChartData("Cachorros", 9),
-      ChartData("Gatos", 2),
-      ChartData("Aves", 1),
-    ];
-
-    return Scaffold(
+    return ChangeNotifierProvider<HomeViewModel>(
+      create: (context) => HomeViewModel()..fetchHomeData(),
+      child: Scaffold(
         appBar: AppbarCustom(),
         drawer: DrawerCustom(),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Text("Animais"),
-              Center(
-                child: Container(
-                    width: 500,
-                    height: 250,
-                    child: SfCartesianChart(
+         body: Consumer<HomeViewModel>(
+          builder: (context, homeViewModel, _) {
+
+            if (homeViewModel.loading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            
+            final List<ChartData> chartData = [
+              ChartData("Cachorros", homeViewModel.quantityDogs.toDouble()),
+              ChartData("Gatos", homeViewModel.quantityCats.toDouble()),
+              ChartData("Aves", homeViewModel.quantityBirds.toDouble()),
+            ];
+
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text("Animais"),
+                  Center(
+                    child: Container(
+                      width: 500,
+                      height: 250,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 217, 217, 217),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      margin: EdgeInsets.all(15),
+                      child: SfCartesianChart(
+                        backgroundColor: Colors.transparent,
                         primaryXAxis: CategoryAxis(),
                         series: <CartesianSeries<ChartData, String>>[
                           ColumnSeries<ChartData, String>(
@@ -41,33 +55,38 @@ class _HomePageState extends State<HomePage> {
                             dataSource: chartData,
                             xValueMapper: (ChartData data, _) => data.x,
                             yValueMapper: (ChartData data, _) => data.y,
-                            dataLabelSettings:
-                                DataLabelSettings(isVisible: true),
+                            dataLabelSettings: DataLabelSettings(isVisible: true),
                           ),
-                        ])),
-              ),
-              Row(
-                children: [
-                  Expanded(child: CardBuilder("Animais", "12")),
-                  Expanded(
-                    child: CardBuilder("Cuidadores", "2"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CardBuilder("Animais", homeViewModel.quantityAnimals.toString()),
+                      ),
+                      Expanded(
+                        child: CardBuilder("Cuidadores", homeViewModel.quantityUsers.toString()),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CardBuilder("Ração", "${homeViewModel.quantityDonations}kg"),
+                      ),
+                      Expanded(child: CardBuilder("Doações", "R\$: ${homeViewModel.quantityMoney}")),
+                    ],
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CardBuilder("Ração", "28.2 kg"),
-                  ),
-                  Expanded(child: CardBuilder("Doações", "R\$: 209")),
-                ],
-              )
-            ],
-          ),
+            );
+          },
         ),
-        bottomNavigationBar: BottomNavigationBarCustom(
-          valueIndex: 1,
-        ));
+        bottomNavigationBar: BottomNavigationBarCustom(valueIndex: 1),
+      ),
+    );
   }
 
   Widget CardBuilder(title, value) {
@@ -98,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.bold,
                     fontSize: 20.0),
                 textAlign: TextAlign.center),
-          )
+          ),
         ],
       ),
     );

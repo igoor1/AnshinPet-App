@@ -1,11 +1,14 @@
 import 'package:anshinpet/data/app_exceptions.dart';
 import 'package:anshinpet/data/network/BaseApiServices.dart';
+import 'package:anshinpet/model/token_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:io';
+import 'package:anshinpet/view_model/token_view_model.dart';
 
 class NetworkApiService extends BaseApiServices {
+  TokenViewModel tokenViewModel = TokenViewModel();
 
   @override
   Future getGetApiResponse(String url) async {
@@ -21,8 +24,30 @@ class NetworkApiService extends BaseApiServices {
   }
 
   @override
+  Future getAuthApiResponse(String url) async {
+    
+    dynamic responseJson;
+    try{
+      TokenModel tokenModel = await tokenViewModel.getToken();
+      String? token = tokenModel.token;
+    
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      ).timeout(Duration(seconds: 10));
+      responseJson = returnResponse(response);
+    }on SocketException{
+      throw FetchDataException('No internet connection');
+    }
+    return responseJson;
+  }
+
+  @override
   Future getPostApiResponse(String url, dynamic data) async {
-    print(data);
     dynamic responseJson;
     try{
       Response response = await post(

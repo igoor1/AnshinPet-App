@@ -13,7 +13,6 @@ class AppbarCustom extends StatelessWidget implements PreferredSizeWidget {
         )
       ],
       actionsPadding: EdgeInsets.fromLTRB(0, 5, 15, 2),
-      iconTheme: IconThemeData(color: Color.fromRGBO(124, 84, 217, 1)),
     );
   }
 

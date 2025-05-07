@@ -1,5 +1,6 @@
 import 'package:anshinpet/configs/routes/routes.dart';
 import 'package:anshinpet/configs/routes/routes_name.dart';
+import 'package:anshinpet/configs/theme/app_theme.dart';
 import 'package:anshinpet/view_model/auth_view_model.dart';
 import 'package:anshinpet/view_model/home_view_model.dart';
 import 'package:anshinpet/view_model/token_view_model.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
       ],
       child: MaterialApp(
+        theme: AppTheme.lightTheme,
         debugShowCheckedModeBanner: false,
         initialRoute: RoutesName.splash,
         onGenerateRoute: Routes.generateRoute,

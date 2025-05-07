@@ -47,14 +47,12 @@ Widget ListTileElement(IconData icon, String text, {VoidCallback? onTap}) {
     padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
     child: ListTile(
       leading: Icon(
-        icon,
-        color: Color.fromRGBO(124, 84, 217, 1),
+        icon
       ),
       title: Text(
         text,
         style: TextStyle(
-            color: Color.fromRGBO(124, 84, 217, 1),
-            fontWeight: FontWeight.bold),
+          fontWeight: FontWeight.bold),
       ),
       onTap: onTap,
     ),

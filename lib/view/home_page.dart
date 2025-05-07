@@ -1,3 +1,4 @@
+import 'package:anshinpet/configs/theme/app_colors.dart';
 import 'package:anshinpet/res/components/appbar_custom.dart';
 import 'package:anshinpet/res/components/bottom_navigation_bar_custom.dart';
 import 'package:anshinpet/view_model/home_view_model.dart';
@@ -51,7 +52,7 @@ class HomePage extends StatelessWidget {
                         primaryXAxis: CategoryAxis(),
                         series: <CartesianSeries<ChartData, String>>[
                           ColumnSeries<ChartData, String>(
-                            color: Color.fromRGBO(124, 84, 217, 1),
+                            color: AppColors.primary,
                             dataSource: chartData,
                             xValueMapper: (ChartData data, _) => data.x,
                             yValueMapper: (ChartData data, _) => data.y,
@@ -99,7 +100,7 @@ class HomePage extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(10),
                     topLeft: Radius.circular(10)),
-                color: Color.fromRGBO(124, 84, 217, 1)),
+                color: AppColors.primary),
             child: ListTile(
               title: Center(
                   child: Text(
@@ -113,7 +114,7 @@ class HomePage extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(value,
                 style: TextStyle(
-                    color: Color.fromRGBO(124, 84, 217, 1),
+                    color: AppColors.primary,
                     fontWeight: FontWeight.bold,
                     fontSize: 20.0),
                 textAlign: TextAlign.center),

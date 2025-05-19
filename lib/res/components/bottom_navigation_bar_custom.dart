@@ -32,7 +32,7 @@ class _BottomNavigationBarCustomState extends State<BottomNavigationBarCustom> {
       } else if (_selectedIndex == 1) {
         Navigator.pushNamed(context, RoutesName.home);
       } else {
-        Navigator.pushNamed(context, RoutesName.home);
+        Navigator.pushNamed(context, RoutesName.donation);
       }
     });
   }

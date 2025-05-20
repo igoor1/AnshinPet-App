@@ -26,4 +26,17 @@ class DonationViewModel with ChangeNotifier{
       notifyListeners();
     }
   }
+
+  Future<void> deleteDonation(int id) async {
+    _loading = true;
+    notifyListeners();
+
+    try {
+      await _donateRepository.deleteDonation(id);
+      _donations.removeWhere((donation) => donation.id == id);
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
+  }
 }

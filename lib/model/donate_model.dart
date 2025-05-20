@@ -1,5 +1,5 @@
 class DonateModel {
-
+  int? id;
   String? tipo;
   double? valor;
   int? quantidade;
@@ -7,6 +7,7 @@ class DonateModel {
   String? data;
 
   DonateModel({
+    this.id,
     this.tipo, 
     this.valor, 
     this.quantidade, 
@@ -15,6 +16,7 @@ class DonateModel {
   });
 
   DonateModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     tipo = json['tipo'];
     valor = json['valor'];
     quantidade = json['quantidade'];

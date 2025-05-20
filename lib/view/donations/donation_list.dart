@@ -1,4 +1,5 @@
 import 'package:anshinpet/res/components/donation_card.dart';
+import 'package:anshinpet/res/utils/dialog_utils.dart';
 import 'package:anshinpet/view_model/donation_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,28 +10,36 @@ class DonationList extends StatelessWidget {
 
    @override
   Widget build(BuildContext context) {
-    final donateVM = Provider.of<DonationViewModel>(context);
+    final donationVM = Provider.of<DonationViewModel>(context);
 
-    if (donateVM.loading) {
+    if (donationVM.loading) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (donateVM.donations.isEmpty) {
+    if (donationVM.donations.isEmpty) {
       return const Center(child: Text('Nenhuma doação encontrada!'));
     }
 
     return ListView.builder(
       padding: const EdgeInsets.all(8),
-      itemCount: donateVM.donations.length,
+      itemCount: donationVM.donations.length,
       itemBuilder: (context, index) {
-        final item = donateVM.donations[index];
+        final item = donationVM.donations[index];
         return DonationCard(
           tipo: item.tipo ?? type,
           valor: (item.valor ?? 0.0).toString(),
           quantidade: (item.quantidade ?? 0).toString(),
           descricao: item.descricao ?? '',
           onEdit: (){},
-          onDelete: (){},
+           onDelete: () async {
+            final confirmed = await DialogUtils.showConfirmationDialog(
+              context,
+              content: "Deseja realmente deletar esta doação?",
+            );
+            if (confirmed && item.id != null){
+              await donationVM.deleteDonation(item.id!);
+            }
+           },
         );
       },
     );

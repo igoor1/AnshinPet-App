@@ -5,4 +5,6 @@ abstract class BaseApiServices {
   Future<dynamic> getPostApiResponse(String url, dynamic data);
 
   Future<dynamic> getAuthApiResponse(String url);
+
+  Future<void> deleteApiResponse(String url);
 }

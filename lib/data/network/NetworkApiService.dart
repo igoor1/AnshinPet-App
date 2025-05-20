@@ -65,6 +65,29 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+  @override
+  Future<void> deleteApiResponse(String url) async {
+    
+    try{
+      TokenModel tokenModel = await tokenViewModel.getToken();
+      String? token = tokenModel.token;
+
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }
+      ).timeout(const Duration(seconds: 10));
+      if (response.statusCode != 200 && response.statusCode != 204) {
+      throw FetchDataException('Failed to delete resource. Status code: ${response.statusCode}');
+      }
+    } on SocketException {
+    throw FetchDataException('No internet connection');
+    }
+  }
+
   dynamic returnResponse (http.Response response) {
     switch(response.statusCode){
       case 200:

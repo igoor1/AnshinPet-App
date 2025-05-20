@@ -22,4 +22,5 @@ class AppUrl {
 
   static String fetchDonate(String type) => '$baseUrl/api/doacoes/listar/$type';
 
+static String deleteDonation(int id) => '$baseUrl/api/doacoes/$id';
 }

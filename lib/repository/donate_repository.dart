@@ -10,4 +10,8 @@ class DonateRepository {
     dynamic response = await _apiServices.getAuthApiResponse(AppUrl.fetchDonate(type));
     return response;
   }
+
+  Future<void> deleteDonation(int id) async {
+    await _apiServices.deleteApiResponse(AppUrl.deleteDonation(id));
+  }
 }

@@ -4,7 +4,8 @@ import 'package:anshinpet/res/components/bottom_navigation_bar_custom.dart';
 import 'package:anshinpet/res/components/drawer_custom.dart';
 import 'package:anshinpet/view/donations/donation_list.dart';
 import 'package:anshinpet/view/donations/donation_type_selector.dart';
-import 'package:anshinpet/view/donations/new_donate.dart';
+import 'package:anshinpet/view/donations/new_donation_page.dart';
+
 import 'package:anshinpet/view_model/donation_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,15 +32,20 @@ class _DonationPageState extends State<DonationPage> {
   }
 
   void _changeType(String type) {
-    setState(() => _selectedType = type);
-    _fetchData();
+    if (_selectedType != type) {
+      setState(() => _selectedType = type);
+      _fetchData();
+    }
   }
+
+  final newDonationPage = NewDonationPage();
 
   void _openAddExpensiveOverlay(){
     showModalBottomSheet(
       isScrollControlled: true,
+      enableDrag: false,
       context: context, 
-      builder: (ctx) => NewDonate(),
+      builder: (ctx) => NewDonationPage(),
     );
   }
 
@@ -80,7 +86,13 @@ class _DonationPageState extends State<DonationPage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBarCustom(valueIndex: 2),
-      floatingActionButton: FloatingActionButton(onPressed: _openAddExpensiveOverlay, child: Icon(Icons.add),)
+      floatingActionButton: FloatingActionButton(
+        onPressed: _openAddExpensiveOverlay, 
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        shape: CircleBorder(),
+        child: Icon(Icons.add),
+      )
     );
   }
 }

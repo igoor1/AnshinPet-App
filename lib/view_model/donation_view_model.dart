@@ -39,4 +39,18 @@ class DonationViewModel with ChangeNotifier{
       notifyListeners();
     }
   }
+
+   Future<void> createDonation(Map<String, dynamic> data) async {
+    _loading = true;
+    notifyListeners();
+
+    try {
+      final json = await _donateRepository.createDonation(data);
+      final newDonation = DonateModel.fromJson(json);
+      _donations.add(newDonation);
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
+  }
 }

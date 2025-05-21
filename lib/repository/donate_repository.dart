@@ -11,6 +11,11 @@ class DonateRepository {
     return response;
   }
 
+  Future<Map<String, dynamic>> createDonation(Map<String, dynamic> data) async {
+    final response = await _apiServices.getAuthPostApiResponse(AppUrl.createDonation, data);
+    return response;
+  }
+
   Future<void> deleteDonation(int id) async {
     await _apiServices.deleteApiResponse(AppUrl.deleteDonation(id));
   }

@@ -65,6 +65,30 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+
+  @override
+  Future<void> deleteApiResponse(String url) async {
+    
+    try{
+      TokenModel tokenModel = await tokenViewModel.getToken();
+      String? token = tokenModel.token;
+
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }
+      ).timeout(const Duration(seconds: 10));
+      if (response.statusCode != 200 && response.statusCode != 204) {
+      throw FetchDataException('Failed to delete resource. Status code: ${response.statusCode}');
+      }
+    } on SocketException {
+    throw FetchDataException('No internet connection');
+    }
+  }
+
   dynamic returnResponse (http.Response response) {
     switch(response.statusCode){
       case 200:
@@ -79,4 +103,53 @@ class NetworkApiService extends BaseApiServices {
         'with status code' + response.statusCode.toString());
     }
   }
+  
+  @override
+  Future<Map<String, dynamic>> getAuthPostApiResponse(String url, data) async {
+        dynamic responseJson;
+    try {
+      TokenModel tokenModel = await tokenViewModel.getToken();
+      String? token = tokenModel.token;
+
+      final response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode(data),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ).timeout(const Duration(seconds: 10));
+
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No internet connection');
+    }
+    return responseJson;
+  }
+
+  @override
+  Future<Map<String, dynamic>> putApiResponse(String url, dynamic data) async {
+    dynamic responseJson;
+    try {
+      TokenModel tokenModel = await tokenViewModel.getToken();
+      String? token = tokenModel.token;
+
+      final response = await http.put(
+        Uri.parse(url),
+        body: jsonEncode(data),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ).timeout(const Duration(seconds: 10));
+
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No internet connection');
+    }
+    return responseJson;
+  }
+  
 }

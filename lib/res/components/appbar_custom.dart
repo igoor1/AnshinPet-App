@@ -13,6 +13,7 @@ class AppbarCustom extends StatelessWidget implements PreferredSizeWidget {
         )
       ],
       actionsPadding: EdgeInsets.fromLTRB(0, 5, 15, 2),
+      surfaceTintColor: Colors.transparent,
     );
   }
 

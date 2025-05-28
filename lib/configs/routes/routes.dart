@@ -1,3 +1,5 @@
+import 'package:anshinpet/view/donation_page.dart';
+import 'package:anshinpet/view/donations/new_donation_page.dart';
 import 'package:anshinpet/view/home_page.dart';
 import 'package:anshinpet/view/login_page.dart';
 import 'package:anshinpet/view/animal_page.dart';
@@ -16,10 +18,17 @@ class Routes {
         return MaterialPageRoute(
             builder: (BuildContext context) => LoginPage());
       case RoutesName.home:
-        return MaterialPageRoute(builder: (BuildContext context) => HomePage());
+        return MaterialPageRoute(
+            builder: (BuildContext context) => HomePage());
       case RoutesName.animal:
         return MaterialPageRoute(
             builder: (BuildContext context) => AnimalPage());
+      case RoutesName.donation:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => DonationPage());
+      case RoutesName.newDonation:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => NewDonationPage());
       default:
         return MaterialPageRoute(builder: (_) {
           return Scaffold(

@@ -19,4 +19,12 @@ class AppUrl {
   static var quantityDonations = '$baseUrl/api/doacoes/quantidade/racao';
   
   static var quantityMoney = '$baseUrl/api/doacoes/quantidade/dinheiro';
+
+  static String fetchDonate(String type) => '$baseUrl/api/doacoes/listar/$type';
+
+  static var createDonation = '$baseUrl/api/doacoes';
+
+  static String deleteDonation(int id) => '$baseUrl/api/doacoes/$id';
+
+  static String updateDonation(int id) => '$baseUrl/api/doacoes/$id';
 }

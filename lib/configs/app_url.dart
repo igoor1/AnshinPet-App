@@ -27,4 +27,6 @@ class AppUrl {
   static String deleteDonation(int id) => '$baseUrl/api/doacoes/$id';
 
   static String updateDonation(int id) => '$baseUrl/api/doacoes/$id';
+
+  static var fetchAnimals = '$baseUrl/api/animais';
 }

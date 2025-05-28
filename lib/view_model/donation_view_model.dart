@@ -53,4 +53,21 @@ class DonationViewModel with ChangeNotifier{
       notifyListeners();
     }
   }
+
+  Future<void> updateDonation(DonateModel donation) async {
+    _loading = true;
+    notifyListeners();
+
+    try {
+      final json = await _donateRepository.updateDonation(donation);
+      final updatedDonation = DonateModel.fromJson(json);
+      final index = _donations.indexWhere((d) => d.id == updatedDonation.id);
+      if (index != -1) {
+        _donations[index] = updatedDonation;
+      }
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
+  }
 }

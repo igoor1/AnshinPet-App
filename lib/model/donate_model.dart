@@ -23,4 +23,15 @@ class DonateModel {
     descricao = json['descricao'];
     data = json['data'];
   }
+
+   Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'tipo': tipo,
+      'valor': valor,
+      'quantidade': quantidade,
+      'descricao': descricao,
+      'data': data,
+    };
+   }
 }

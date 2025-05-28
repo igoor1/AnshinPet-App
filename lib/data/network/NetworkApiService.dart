@@ -127,4 +127,29 @@ class NetworkApiService extends BaseApiServices {
     }
     return responseJson;
   }
+
+  @override
+  Future<Map<String, dynamic>> putApiResponse(String url, dynamic data) async {
+    dynamic responseJson;
+    try {
+      TokenModel tokenModel = await tokenViewModel.getToken();
+      String? token = tokenModel.token;
+
+      final response = await http.put(
+        Uri.parse(url),
+        body: jsonEncode(data),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ).timeout(const Duration(seconds: 10));
+
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No internet connection');
+    }
+    return responseJson;
+  }
+  
 }

@@ -27,4 +27,16 @@ class AppUrl {
   static String deleteDonation(int id) => '$baseUrl/api/doacoes/$id';
 
   static String updateDonation(int id) => '$baseUrl/api/doacoes/$id';
+
+  static var diseaseUrl = '$baseUrl/api/doencas';
+
+  static String updateDisease(int id) => '$baseUrl/api/doencas/$id';
+  
+  static String deleteDisease(int id) => '$baseUrl/api/doencas/$id';
+
+  static var vaccineUrl = '$baseUrl/api/vacinas';
+
+  static String updateVaccine(int id) => '$baseUrl/api/vacinas/$id';
+  
+  static String deleteVaccine(int id) => '$baseUrl/api/vacinas/$id';
 }

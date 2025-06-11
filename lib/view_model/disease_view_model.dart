@@ -66,6 +66,36 @@ class DiseaseViewModel with ChangeNotifier{
       notifyListeners();
     }
   }
+
+  Future<void> createDisease(Map<String, dynamic> data) async {
+    _loading = true;
+    notifyListeners();
+
+    try{
+      final newDiseaseJson = await _diseaseRepository.createDisease(data);
+      final newDisease = DiseaseModel.fromJson(newDiseaseJson);
+      _allDiseases.insert(0, newDisease); 
+      filterDiseases(_lastSearchQuery);
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> deleteDisease(int id) async {
+    _loading = true;
+    notifyListeners();
+
+    try{
+      await _diseaseRepository.deleteDisease(id);
+
+      _allDiseases.removeWhere((disease) => disease.id == id);
+      filterDiseases(_lastSearchQuery);
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
+  }
 }
 
 

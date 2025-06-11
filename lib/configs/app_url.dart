@@ -31,4 +31,6 @@ class AppUrl {
   static var diseaseUrl = '$baseUrl/api/doencas';
 
   static String updateDisease(int id) => '$baseUrl/api/doencas/$id';
+  
+  static String deleteDisease(int id) => '$baseUrl/api/doencas/$id';
 }

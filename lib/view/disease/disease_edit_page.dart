@@ -31,15 +31,12 @@ class _DiseaseEditPageState extends State<DiseaseEditPage> {
 
     final lowercasedInput = inputText.toLowerCase().trim();
     switch (lowercasedInput) {
-      case 'alta':
-      case 'a':
+      case 'alta': case 'Alta':
         return 'A';
-      case 'media':
-      case 'média':
+      case 'Media': case 'media':
       case 'm':
         return 'M';
-      case 'baixa':
-      case 'b':
+      case 'Baixa': case 'baixa':
         return 'B';
       default:
         return '';
@@ -146,7 +143,50 @@ class _DiseaseEditPageState extends State<DiseaseEditPage> {
           )
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showConfirmationDialog,
+        backgroundColor: Colors.red.shade700, 
+        foregroundColor: Colors.white,
+        tooltip: 'Excluir Doença',
+        child: const Icon(Icons.delete_outline),
+      ),
     );
+  }
+
+  void _showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Confirmar Exclusão'),
+          content: const Text('Deseja realmente excluir esta doença?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: Colors.red.shade700),
+              child: const Text('Excluir'),
+              onPressed: () async {
+                Navigator.of(dialogContext).pop();
+                await _deleteDisease();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _deleteDisease() async {
+    await Provider.of<DiseaseViewModel>(context, listen: false)
+        .deleteDisease(widget.disease.id);
+
+    if (!mounted) return;
+    Navigator.of(context).pop();
   }
 
   void _saveChanges() {

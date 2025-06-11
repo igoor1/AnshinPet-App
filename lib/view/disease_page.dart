@@ -1,6 +1,7 @@
 import 'package:anshinpet/configs/theme/app_colors.dart';
 import 'package:anshinpet/res/components/appbar_custom.dart';
 import 'package:anshinpet/res/components/disease_card.dart';
+import 'package:anshinpet/view/disease/new_disease_page.dart';
 import 'package:anshinpet/view_model/disease_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -91,7 +92,12 @@ class _DiseasePageState extends State<DiseasePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-              onPressed: (){}, 
+              onPressed: () => Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => NewDiseasePage()
+                )
+              ), 
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               shape: CircleBorder(),

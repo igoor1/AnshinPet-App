@@ -16,4 +16,13 @@ class DiseaseRepository {
     final response = await _apiServices.putApiResponse(AppUrl.updateDisease(disease.id), disease);
     return response;
   }
+
+  Future<Map<String, dynamic>> createDisease(Map<String, dynamic> data) async {
+    final response = await _apiServices.getAuthPostApiResponse(AppUrl.diseaseUrl, data);
+    return response;
+  }
+
+  Future<void> deleteDisease(int id) async {
+    await _apiServices.deleteApiResponse(AppUrl.deleteDisease(id));
+  }
 }

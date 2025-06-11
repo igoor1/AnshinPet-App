@@ -1,5 +1,5 @@
 import 'package:anshinpet/model/disease_model.dart';
-import 'package:anshinpet/view/disease_edit_page.dart';
+import 'package:anshinpet/view/disease/disease_edit_page.dart';
 import 'package:flutter/material.dart';
 
 class DiseaseCard extends StatelessWidget {

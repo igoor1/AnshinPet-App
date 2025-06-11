@@ -29,7 +29,7 @@ class DrawerCustom extends StatelessWidget {
             ),  
           ),
           ListTileElement(
-            Icons.healing, 
+            Icons.assignment, 
             'Doenças',
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DiseasePage()))
             ),

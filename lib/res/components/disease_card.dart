@@ -64,9 +64,9 @@ class DiseaseCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Icon(
-                    Icons.healing_outlined,
+                    Icons.assignment_outlined,
                     color: Color.fromRGBO(124, 84, 217, 1),
-                    size: 18.0,
+                    size: 20.0,
                   ),
                   const SizedBox(width: 8.0),
                   Flexible(

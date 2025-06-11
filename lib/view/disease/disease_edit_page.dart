@@ -126,7 +126,6 @@ class _DiseaseEditPageState extends State<DiseaseEditPage> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromRGBO(124, 84, 217, 1),
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
                       ),
                       onPressed: _saveChanges,
                       child: Text(

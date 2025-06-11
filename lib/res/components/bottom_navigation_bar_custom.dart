@@ -46,19 +46,19 @@ class _BottomNavigationBarCustomState extends State<BottomNavigationBarCustom> {
               Icons.pets,
               size: (_selectedIndex == 0) ? 35 : 25,
             ),
-            label: ''),
+            label: 'Animais'),
         BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
               size: (_selectedIndex == 1) ? 35 : 25,
             ),
-            label: ''),
+            label: 'Home'),
         BottomNavigationBarItem(
             icon: Icon(
               Icons.volunteer_activism,
               size: (_selectedIndex == 2) ? 35 : 25,
             ),
-            label: ''),
+            label: 'Doações'),
       ],
       currentIndex: _selectedIndex,
       onTap: _bottomChangeIndex,

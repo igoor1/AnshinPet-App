@@ -35,9 +35,43 @@ class HomePage extends StatelessWidget {
             ];
 
             return SingleChildScrollView(
+              padding: EdgeInsets.all(10.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Animais"),
+                  Text(
+                    "Dashboard",
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary
+                    ),
+                  ),
+                  
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CardBuilder("Animais", homeViewModel.quantityAnimals.toString()),
+                      ),
+                      Expanded(
+                        child: CardBuilder("Cuidadores", homeViewModel.quantityUsers.toString()),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CardBuilder("Ração", "${homeViewModel.quantityDonations}"),
+                      ),
+                      Expanded(child: CardBuilder("Doações", "${homeViewModel.quantityMoney}")),
+                    ],
+                  ),
+                  SizedBox(height: 10.0,),
+                  Center(
+                    child: Text(
+                      'Tipos de Animais'
+                    ),
+                  ),
                   Center(
                     child: Container(
                       width: 500,
@@ -61,24 +95,6 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CardBuilder("Animais", homeViewModel.quantityAnimals.toString()),
-                      ),
-                      Expanded(
-                        child: CardBuilder("Cuidadores", homeViewModel.quantityUsers.toString()),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CardBuilder("Ração", "${homeViewModel.quantityDonations}kg"),
-                      ),
-                      Expanded(child: CardBuilder("Doações", "R\$: ${homeViewModel.quantityMoney}")),
-                    ],
                   ),
                 ],
               ),

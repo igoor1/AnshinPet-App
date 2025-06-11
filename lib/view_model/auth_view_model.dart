@@ -18,13 +18,14 @@ class AuthViewModel with ChangeNotifier {
   }
 
   Future<void> loginApi(dynamic data, BuildContext context) async {
-    setLoading(false);
+    setLoading(true);
     try{
       var value = await _authRepo.loginApi(data);
       final tokenValue = Provider.of<TokenViewModel>(context, listen: false);
       tokenValue.saveToken(value);     
 
       Navigator.pushNamed(context, RoutesName.home);
+      setLoading(false);
       if (kDebugMode) print(value.toString());
     }catch (e) {
       setLoading(false);

@@ -52,7 +52,7 @@ class _DonationPageState extends State<DonationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+     // backgroundColor: AppColors.background,
       appBar: AppbarCustom(),
       drawer: DrawerCustom(),
       body: Column(
@@ -64,7 +64,7 @@ class _DonationPageState extends State<DonationPage> {
               "Doações",
               style: TextStyle(
                 fontSize: 28,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w700,
                 color: AppColors.primary
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:anshinpet/configs/routes/routes_name.dart';
+import 'package:anshinpet/view/disease_page.dart';
 import 'package:anshinpet/view_model/token_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,11 @@ class DrawerCustom extends StatelessWidget {
               ),
             ),  
           ),
-          ListTileElement(Icons.medication_liquid, 'Cuidados Médicos'),
+          ListTileElement(
+            Icons.healing, 
+            'Doenças',
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DiseasePage()))
+            ),
           ListTileElement(Icons.group, 'Cuidadores'),
           ListTileElement(Icons.settings, 'Configurações'),
           Divider(),

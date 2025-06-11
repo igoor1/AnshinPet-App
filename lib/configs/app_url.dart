@@ -27,4 +27,8 @@ class AppUrl {
   static String deleteDonation(int id) => '$baseUrl/api/doacoes/$id';
 
   static String updateDonation(int id) => '$baseUrl/api/doacoes/$id';
+
+  static var diseaseUrl = '$baseUrl/api/doencas';
+
+  static String updateDisease(int id) => '$baseUrl/api/doencas/$id';
 }

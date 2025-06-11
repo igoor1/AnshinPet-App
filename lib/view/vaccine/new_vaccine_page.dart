@@ -1,41 +1,26 @@
 import 'package:anshinpet/configs/theme/app_colors.dart';
 import 'package:anshinpet/res/components/appbar_custom.dart';
-import 'package:anshinpet/view_model/disease_view_model.dart';
+import 'package:anshinpet/view_model/vaccine_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class NewDiseasePage extends StatefulWidget {
-  const NewDiseasePage({super.key});
+class NewVaccinePage extends StatefulWidget {
+  const NewVaccinePage({super.key});
 
   @override
-  State<NewDiseasePage> createState() => _NewDiseasePageState();
+  State<NewVaccinePage> createState() => _NewVaccinePageState();
 }
 
-class _NewDiseasePageState extends State<NewDiseasePage> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+class _NewVaccinePageState extends State<NewVaccinePage> {
+   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _producerController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     _nameController.dispose();
-    _descriptionController.dispose();
+    _producerController.dispose();
     super.dispose();
-  }
-
-  String _getSeverityCodeFromText(String? inputText) {
-    if (inputText == null) return '';
-    final lowercasedInput = inputText.toLowerCase().trim();
-    switch (lowercasedInput) {
-      case 'alta': case 'Alta':
-        return 'A';
-      case 'media': case 'Media': case 'm':
-        return 'M';
-      case 'baixa': case 'Baixa':
-        return 'B';
-      default:
-        return '';
-    }
   }
 
   @override
@@ -52,7 +37,7 @@ class _NewDiseasePageState extends State<NewDiseasePage> {
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Nome da Doença',
+                  labelText: 'Nome da Vacina',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
                 ),
                 validator: (value) {
@@ -64,28 +49,28 @@ class _NewDiseasePageState extends State<NewDiseasePage> {
               ),
               const SizedBox(height: 20.0),
               TextFormField(
-                controller: _descriptionController,
+                controller: _producerController,
                 decoration: InputDecoration(
-                  labelText: 'Gravidade (Alta, Média ou Baixa)',
+                  labelText: 'fabricante da vacina',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
                 ),
                 validator: (value) {
-                  if (_getSeverityCodeFromText(value).isEmpty) {
-                    return 'Insira Alta, Media ou Baixa.';
+                  if (value == null || value.isEmpty) {
+                    return 'Insira o Fabricante';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 30.0),
               ElevatedButton.icon(
-                label: const Text('Cadastrar Doença'),
+                label: const Text('Cadastrar Vacina'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
                   foregroundColor: Colors.white,
                 ),
-                onPressed: _createDisease,
+                onPressed: _createVaccine,
               ),
             ],
           ),
@@ -94,17 +79,15 @@ class _NewDiseasePageState extends State<NewDiseasePage> {
     );
   }
   
-   void _createDisease() {
+   void _createVaccine() {
     if (_formKey.currentState!.validate()) {
-      final severityCode = _getSeverityCodeFromText(_descriptionController.text);
-      
-      final newDiseaseData = {
+      final data = {
         'nome': _nameController.text,
-        'gravidade': severityCode,
+        'gravidade': _producerController.text,
       };
-      
-      Provider.of<DiseaseViewModel>(context, listen: false)
-          .createDisease(newDiseaseData);
+
+      Provider.of<VaccineViewModel>(context, listen: false)
+          .createVaccine(data);
 
       Navigator.pop(context);
     }

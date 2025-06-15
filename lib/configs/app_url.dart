@@ -1,5 +1,4 @@
 class AppUrl {
-
   static var baseUrl = 'https://anshinpet-api-bc75c527a28e.herokuapp.com';
 
   static var loginUrl = '$baseUrl/api/auth/login';
@@ -17,7 +16,7 @@ class AppUrl {
   static var quantityUsers = '$baseUrl/api/usuarios/quantidade';
 
   static var quantityDonations = '$baseUrl/api/doacoes/quantidade/racao';
-  
+
   static var quantityMoney = '$baseUrl/api/doacoes/quantidade/dinheiro';
 
   static String fetchDonate(String type) => '$baseUrl/api/doacoes/listar/$type';
@@ -31,12 +30,14 @@ class AppUrl {
   static var diseaseUrl = '$baseUrl/api/doencas';
 
   static String updateDisease(int id) => '$baseUrl/api/doencas/$id';
-  
+
   static String deleteDisease(int id) => '$baseUrl/api/doencas/$id';
 
   static var vaccineUrl = '$baseUrl/api/vacinas';
 
   static String updateVaccine(int id) => '$baseUrl/api/vacinas/$id';
-  
+
   static String deleteVaccine(int id) => '$baseUrl/api/vacinas/$id';
+
+  static var fetchAnimals = '$baseUrl/api/animais';
 }

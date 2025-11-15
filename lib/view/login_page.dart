@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (_formKey.currentState?.validate() ?? false) {
                     Map data = {
                       'email': _emailController.text.toString(),
-                      'senha': _passwordController.text.toString()
+                      'password': _passwordController.text.toString()
                     };
                     authViewMode.loginApi(data, context);
                   }

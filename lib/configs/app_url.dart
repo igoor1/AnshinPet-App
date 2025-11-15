@@ -1,7 +1,7 @@
 class AppUrl {
-  static var baseUrl = 'https://anshinpet-api-bc75c527a28e.herokuapp.com';
+  static var baseUrl = 'https://anshinpet-api-102cd23baaed.herokuapp.com';
 
-  static var loginUrl = '$baseUrl/api/auth/login';
+  static var loginUrl = '$baseUrl/api/auth/signin';
 
   static var quantityAnimals = '$baseUrl/api/animais/quantidade';
 

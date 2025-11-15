@@ -9,100 +9,109 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:anshinpet/resources/components/drawer_custom.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeViewModel>().fetchHomeData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<HomeViewModel>(
-      create: (context) => HomeViewModel()..fetchHomeData(),
-      child: Scaffold(
-        appBar: AppbarCustom(),
-        drawer: DrawerCustom(),
-         body: Consumer<HomeViewModel>(
-          builder: (context, homeViewModel, _) {
 
-            if (homeViewModel.loading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            
-            final List<ChartData> chartData = [
-              ChartData("Cachorros", homeViewModel.quantityDogs.toDouble()),
-              ChartData("Gatos", homeViewModel.quantityCats.toDouble()),
-              ChartData("Aves", homeViewModel.quantityBirds.toDouble()),
-            ];
-
-            return SingleChildScrollView(
-              padding: EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Dashboard",
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primary
-                    ),
-                  ),
-                  
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CardBuilder("Animais", homeViewModel.quantityAnimals.toString()),
-                      ),
-                      Expanded(
-                        child: CardBuilder("Cuidadores", homeViewModel.quantityUsers.toString()),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CardBuilder("Ração", "${homeViewModel.quantityDonations}"),
-                      ),
-                      Expanded(child: CardBuilder("Doações", "${homeViewModel.quantityMoney}")),
-                    ],
-                  ),
-                  SizedBox(height: 10.0,),
-                  Center(
-                    child: Text(
-                      'Tipos de Animais'
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: 500,
-                      height: 250,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 217, 217, 217),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      margin: EdgeInsets.all(15),
-                      child: SfCartesianChart(
-                        backgroundColor: Colors.transparent,
-                        primaryXAxis: CategoryAxis(),
-                        series: <CartesianSeries<ChartData, String>>[
-                          ColumnSeries<ChartData, String>(
-                            color: AppColors.primary,
-                            dataSource: chartData,
-                            xValueMapper: (ChartData data, _) => data.x,
-                            yValueMapper: (ChartData data, _) => data.y,
-                            dataLabelSettings: DataLabelSettings(isVisible: true),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+    return Scaffold(
+      appBar: AppbarCustom(),
+      drawer: DrawerCustom(),
+      body: Consumer<HomeViewModel>(
+        builder: (context, homeViewModel, _) {
+          
+          if (homeViewModel.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          },
-        ),
-        bottomNavigationBar: BottomNavigationBarCustom(valueIndex: 1),
+          }
+          
+          final List<ChartData> chartData = [
+            ChartData("Cachorros", homeViewModel.quantityDogs.toDouble()),
+            ChartData("Gatos", homeViewModel.quantityCats.toDouble()),
+            ChartData("Aves", homeViewModel.quantityBirds.toDouble()),
+          ];
+
+          return SingleChildScrollView(
+            padding: EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Dashboard",
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primary
+                  ),
+                ),
+                
+                Row(
+                  children: [
+                    Expanded(
+                      child: CardBuilder("Animais", homeViewModel.quantityAnimals.toString()),
+                    ),
+                    Expanded(
+                      child: CardBuilder("Cuidadores", homeViewModel.quantityUsers.toString()),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CardBuilder("Ração", "${homeViewModel.quantityDonations}"),
+                    ),
+                    Expanded(child: CardBuilder("Doações", "${homeViewModel.quantityMoney}")),
+                  ],
+                ),
+                SizedBox(height: 10.0,),
+                Center(
+                  child: Text(
+                    'Tipos de Animais'
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    width: 500,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 217, 217, 217),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    margin: EdgeInsets.all(15),
+                    child: SfCartesianChart(
+                      backgroundColor: Colors.transparent,
+                      primaryXAxis: CategoryAxis(),
+                      series: <CartesianSeries<ChartData, String>>[
+                        ColumnSeries<ChartData, String>(
+                          color: AppColors.primary,
+                          dataSource: chartData,
+                          xValueMapper: (ChartData data, _) => data.x,
+                          yValueMapper: (ChartData data, _) => data.y,
+                          dataLabelSettings: DataLabelSettings(isVisible: true),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
+      bottomNavigationBar: BottomNavigationBarCustom(valueIndex: 1),
     );
   }
 

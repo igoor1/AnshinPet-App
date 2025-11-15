@@ -9,22 +9,23 @@ class SplashServices {
   Future<TokenModel> getUserDate() => TokenViewModel().getToken();
 
   void checkAuthentication(BuildContext context) async {
-
-    TokenViewModel().getToken().then((value){
-
+    TokenViewModel().getToken().then((value) {
       if(value.token == 'null' || value.token == ''){
-        Timer(const Duration(seconds: 3),
-              ()=> 
-        Navigator.pushNamed(context, RoutesName.login) );
-      }else {
-        Timer(Duration(seconds: 3),
-              ()=> 
-        Navigator.pushNamed(context, RoutesName.home));
+        Timer(
+          const Duration(seconds: 3),
+          ()=> Navigator.pushNamed(context, RoutesName.login) 
+        );
+      } else {
+        Timer(
+          Duration(seconds: 3),
+          ()=> Navigator.pushNamed(context, RoutesName.home)
+        );
       }
     }).onError((error, stackTrace){
-      Timer(Duration(seconds: 3),
-            ()=> 
-        Navigator.pushNamed(context, RoutesName.login));
+      Timer(
+        Duration(seconds: 3),
+        ()=> Navigator.pushNamed(context, RoutesName.login)
+      );
     });
   }
 }

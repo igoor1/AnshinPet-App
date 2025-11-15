@@ -30,7 +30,11 @@ class NetworkApiService extends BaseApiServices {
     try{
       TokenModel tokenModel = await tokenViewModel.getToken();
       String? token = tokenModel.token;
-    
+
+      if (token == null || token.isEmpty || token == 'null') {
+        throw UnauthorizedException('Token não encontrado');
+      }
+      
       final response = await http.get(
         Uri.parse(url),
         headers: {

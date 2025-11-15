@@ -1,5 +1,5 @@
 import 'package:anshinpet/model/donate_model.dart';
-import 'package:anshinpet/repository/donate_repository.dart';
+import 'package:anshinpet/services/repository/donate_repository.dart';
 import 'package:flutter/widgets.dart';
 
 class DonationViewModel with ChangeNotifier{

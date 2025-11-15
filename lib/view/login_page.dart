@@ -1,5 +1,5 @@
-import 'package:anshinpet/res/components/round_buton.dart';
-import 'package:anshinpet/view_model/auth_view_model.dart';
+import 'package:anshinpet/resources/components/round_buton.dart';
+import 'package:anshinpet/viewmodels/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

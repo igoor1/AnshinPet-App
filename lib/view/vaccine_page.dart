@@ -1,8 +1,8 @@
 import 'package:anshinpet/configs/theme/app_colors.dart';
-import 'package:anshinpet/res/components/appbar_custom.dart';
-import 'package:anshinpet/res/components/vaccine_card.dart';
+import 'package:anshinpet/resources/components/appbar_custom.dart';
+import 'package:anshinpet/resources/components/vaccine_card.dart';
 import 'package:anshinpet/view/vaccine/new_vaccine_page.dart';
-import 'package:anshinpet/view_model/vaccine_view_model.dart';
+import 'package:anshinpet/viewmodels/vaccine_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

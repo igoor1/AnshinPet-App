@@ -1,7 +1,7 @@
 import 'package:anshinpet/configs/routes/routes_name.dart';
 import 'package:anshinpet/view/disease_page.dart';
 import 'package:anshinpet/view/vaccine_page.dart';
-import 'package:anshinpet/view_model/token_view_model.dart';
+import 'package:anshinpet/viewmodels/token_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

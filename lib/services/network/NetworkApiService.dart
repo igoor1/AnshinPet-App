@@ -1,11 +1,11 @@
 import 'package:anshinpet/data/app_exceptions.dart';
-import 'package:anshinpet/data/network/BaseApiServices.dart';
+import 'package:anshinpet/services/network/BaseApiServices.dart';
 import 'package:anshinpet/model/token_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'package:anshinpet/view_model/token_view_model.dart';
+import 'package:anshinpet/viewmodels/token_view_model.dart';
 
 class NetworkApiService extends BaseApiServices {
   TokenViewModel tokenViewModel = TokenViewModel();

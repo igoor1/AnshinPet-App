@@ -1,5 +1,5 @@
-import 'package:anshinpet/data/network/BaseApiServices.dart';
-import 'package:anshinpet/data/network/NetworkApiService.dart';
+import 'package:anshinpet/services/network/BaseApiServices.dart';
+import 'package:anshinpet/services/network/NetworkApiService.dart';
 import 'package:anshinpet/configs/app_url.dart';
 import 'package:anshinpet/model/token_model.dart';
 

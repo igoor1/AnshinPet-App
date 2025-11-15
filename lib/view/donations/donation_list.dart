@@ -1,7 +1,7 @@
-import 'package:anshinpet/res/components/donation_card.dart';
-import 'package:anshinpet/res/utils/dialog_utils.dart';
+import 'package:anshinpet/resources/components/donation_card.dart';
+import 'package:anshinpet/resources/utils/dialog_utils.dart';
 import 'package:anshinpet/view/donations/edit_donation_page.dart';
-import 'package:anshinpet/view_model/donation_view_model.dart';
+import 'package:anshinpet/viewmodels/donation_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

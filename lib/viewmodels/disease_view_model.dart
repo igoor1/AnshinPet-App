@@ -1,5 +1,5 @@
 import 'package:anshinpet/model/disease_model.dart';
-import 'package:anshinpet/repository/disease_repository.dart';
+import 'package:anshinpet/services/repository/disease_repository.dart';
 import 'package:flutter/cupertino.dart';
 
 class DiseaseViewModel with ChangeNotifier{

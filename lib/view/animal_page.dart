@@ -1,8 +1,8 @@
 import 'package:anshinpet/configs/theme/app_colors.dart';
-import 'package:anshinpet/res/components/appbar_custom.dart';
-import 'package:anshinpet/res/components/bottom_navigation_bar_custom.dart';
-import 'package:anshinpet/res/components/drawer_custom.dart';
-import 'package:anshinpet/view_model/animal_view_model.dart';
+import 'package:anshinpet/resources/components/appbar_custom.dart';
+import 'package:anshinpet/resources/components/bottom_navigation_bar_custom.dart';
+import 'package:anshinpet/resources/components/drawer_custom.dart';
+import 'package:anshinpet/viewmodels/animal_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:anshinpet/view/animals/new_animal_page.dart';

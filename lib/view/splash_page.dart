@@ -1,4 +1,4 @@
-import 'package:anshinpet/view_model/services/splash_services.dart';
+import 'package:anshinpet/core/services/splash_services.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {

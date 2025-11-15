@@ -1,5 +1,5 @@
 import 'package:anshinpet/model/animal_model.dart';
-import 'package:anshinpet/repository/animal_respository.dart';
+import 'package:anshinpet/services/repository/animal_respository.dart';
 import 'package:flutter/widgets.dart';
 
 class AnimalViewModel with ChangeNotifier {

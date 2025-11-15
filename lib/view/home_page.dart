@@ -1,13 +1,13 @@
 import 'package:anshinpet/configs/theme/app_colors.dart';
-import 'package:anshinpet/res/components/appbar_custom.dart';
-import 'package:anshinpet/res/components/bottom_navigation_bar_custom.dart';
-import 'package:anshinpet/view_model/home_view_model.dart';
+import 'package:anshinpet/resources/components/appbar_custom.dart';
+import 'package:anshinpet/resources/components/bottom_navigation_bar_custom.dart';
+import 'package:anshinpet/viewmodels/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import 'package:anshinpet/res/components/drawer_custom.dart';
+import 'package:anshinpet/resources/components/drawer_custom.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

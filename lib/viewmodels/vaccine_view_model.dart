@@ -1,5 +1,5 @@
 import 'package:anshinpet/model/vaccine_model.dart';
-import 'package:anshinpet/repository/vaccine_repository.dart';
+import 'package:anshinpet/services/repository/vaccine_repository.dart';
 import 'package:flutter/material.dart';
 
 class VaccineViewModel with ChangeNotifier{

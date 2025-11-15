@@ -1,6 +1,6 @@
 import 'package:anshinpet/configs/theme/app_colors.dart';
 import 'dart:io';
-import 'package:anshinpet/view_model/animal_view_model.dart';
+import 'package:anshinpet/viewmodels/animal_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';

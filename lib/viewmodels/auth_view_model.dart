@@ -1,6 +1,6 @@
-import 'package:anshinpet/repository/auth_repository.dart';
+import 'package:anshinpet/services/repository/auth_repository.dart';
 import 'package:anshinpet/configs/routes/routes_name.dart';
-import 'package:anshinpet/view_model/token_view_model.dart';
+import 'package:anshinpet/viewmodels/token_view_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

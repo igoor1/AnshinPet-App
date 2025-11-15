@@ -1,12 +1,12 @@
 import 'package:anshinpet/configs/theme/app_colors.dart';
-import 'package:anshinpet/res/components/appbar_custom.dart';
-import 'package:anshinpet/res/components/bottom_navigation_bar_custom.dart';
-import 'package:anshinpet/res/components/drawer_custom.dart';
+import 'package:anshinpet/resources/components/appbar_custom.dart';
+import 'package:anshinpet/resources/components/bottom_navigation_bar_custom.dart';
+import 'package:anshinpet/resources/components/drawer_custom.dart';
 import 'package:anshinpet/view/donations/donation_list.dart';
 import 'package:anshinpet/view/donations/donation_type_selector.dart';
 import 'package:anshinpet/view/donations/new_donation_page.dart';
 
-import 'package:anshinpet/view_model/donation_view_model.dart';
+import 'package:anshinpet/viewmodels/donation_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

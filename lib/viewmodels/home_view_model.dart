@@ -1,4 +1,4 @@
-import 'package:anshinpet/repository/home_repository.dart';
+import 'package:anshinpet/services/repository/home_repository.dart';
 import 'package:flutter/widgets.dart';
 
 class HomeViewModel with ChangeNotifier{

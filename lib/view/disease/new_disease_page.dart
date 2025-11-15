@@ -1,6 +1,6 @@
 import 'package:anshinpet/configs/theme/app_colors.dart';
-import 'package:anshinpet/res/components/appbar_custom.dart';
-import 'package:anshinpet/view_model/disease_view_model.dart';
+import 'package:anshinpet/resources/components/appbar_custom.dart';
+import 'package:anshinpet/viewmodels/disease_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

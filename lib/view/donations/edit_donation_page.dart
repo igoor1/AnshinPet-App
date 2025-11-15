@@ -1,6 +1,6 @@
 import 'package:anshinpet/configs/theme/app_colors.dart';
 import 'package:anshinpet/model/donate_model.dart';
-import 'package:anshinpet/view_model/donation_view_model.dart';
+import 'package:anshinpet/viewmodels/donation_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

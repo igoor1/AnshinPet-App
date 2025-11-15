@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:anshinpet/configs/routes/routes_name.dart';
 import 'package:anshinpet/model/token_model.dart';
-import 'package:anshinpet/view_model/token_view_model.dart';
+import 'package:anshinpet/viewmodels/token_view_model.dart';
 import 'package:flutter/material.dart';
 
 class SplashServices {

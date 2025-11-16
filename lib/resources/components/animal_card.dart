@@ -38,23 +38,10 @@ class AnimalCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Image.network(
-              AppUrl.animalImageUrl(animal.id!),
+            child: SizedBox(
               width: 70,
               height: 70,
-              fit: BoxFit.cover,
-              headers: {
-                'Authorization': 'Bearer $token',
-              },
-              errorBuilder: (_, __, ___) => Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: const Icon(Icons.pets, color: AppColors.primary, size: 32),
-              ),
+              child: _buildAnimalImage(),
             ),
           ),
 
@@ -109,21 +96,58 @@ class AnimalCard extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildAnimalImage() {
+    if (animal.id == null || token == null) {
+      return Container(
+        decoration: BoxDecoration(
+          color: AppColors.primary.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: const Icon(Icons.pets, color: AppColors.primary, size: 32),
+      );
+    }
+
+    return Image.network(
+      AppUrl.animalImageUrl(animal.id!),
+      fit: BoxFit.cover,
+      headers: {'Authorization': 'Bearer $token'},
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Container(
+          decoration: BoxDecoration(
+            color: AppColors.primary.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: const Center(
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        );
+      },
+      errorBuilder: (_, __, ___) => Container(
+        decoration: BoxDecoration(
+          color: AppColors.primary.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: const Icon(Icons.pets, color: AppColors.primary, size: 32),
+      ),
+    );
+  }
 }
 
 Color getStatusColor(String status) {
   switch (status.toUpperCase()) {
     case "ADOÇÃO":
-      return const Color(0xFF4CAF50); // Verde
+      return const Color(0xFF4CAF50); 
     case "MEDICAMENTO":
-      return const Color(0xFFFFC107); // Amarelo
+      return const Color(0xFFFFC107);
     case "ADOTADO":
-      return const Color(0xFF2196F3); // Azul
+      return const Color(0xFF2196F3);
     case "DOENTE":
-      return const Color(0xFFE91E63); // Rosa/Red
+      return const Color(0xFFE91E63);
     case "NÃO DISPONÍVEL":
-      return const Color(0xFF9C27B0); // Roxo
+      return const Color(0xFF9C27B0);
     default:
-      return const Color(0xFF9E9E9E); // Cinza
+      return const Color(0xFF9E9E9E);
   }
 }

@@ -7,11 +7,11 @@ class RoutesName {
 
   static const String animal = 'animal_page';
 
-  static const String donation = 'donation_page';
-
-  static const String newDonation = 'new_donation_page';
-
   static const String animalType = 'animal_type_page';
   
   static const String animalStatus = 'animal_status_page';
+
+  static const String medication = 'medication_page';
+
+   static const String settings = 'configuration_page';
 }

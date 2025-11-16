@@ -1,7 +1,6 @@
 import 'package:anshinpet/configs/app_url.dart';
 import 'package:anshinpet/services/network/BaseApiServices.dart';
 import 'package:anshinpet/services/network/NetworkApiService.dart';
-import 'package:anshinpet/model/vaccine_model.dart';
 
 class VaccineRepository {
 

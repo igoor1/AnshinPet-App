@@ -1,16 +1,16 @@
-class Vaccine {
+class VaccineModel {
   final int id;
   final String name;
   final String manufacturer;
 
-  Vaccine({
+  VaccineModel({
     required this.id,
     required this.name,
     required this.manufacturer,
   });
 
-  factory Vaccine.fromJson(Map<String, dynamic> json) {
-    return Vaccine(
+  factory VaccineModel.fromJson(Map<String, dynamic> json) {
+    return VaccineModel(
       id: json["id"],
       name: json["name"],
       manufacturer: json["manufacturer"],

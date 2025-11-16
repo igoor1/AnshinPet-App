@@ -3,6 +3,7 @@ import 'package:anshinpet/viewmodels/animal_type_view_model.dart';
 import 'package:anshinpet/viewmodels/animal_view_model.dart';
 import 'package:anshinpet/viewmodels/auth_view_model.dart';
 import 'package:anshinpet/viewmodels/disease_view_model.dart';
+import 'package:anshinpet/viewmodels/medication_view_model.dart';
 import 'package:anshinpet/viewmodels/token_view_model.dart';
 import 'package:anshinpet/viewmodels/vaccine_view_model.dart';
 import 'package:provider/provider.dart';
@@ -16,5 +17,6 @@ class AppProviders {
         ChangeNotifierProvider<AnimalViewModel>(create: (_) => AnimalViewModel()),
         ChangeNotifierProvider<AnimalTypeViewModel>(create: (_) => AnimalTypeViewModel()),
         ChangeNotifierProvider<AnimalStatusViewModel>(create: (_) => AnimalStatusViewModel()),
+        ChangeNotifierProvider<MedicationViewModel>(create: (_) => MedicationViewModel()),
       ];
 }

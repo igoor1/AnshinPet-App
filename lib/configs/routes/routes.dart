@@ -1,7 +1,9 @@
 import 'package:anshinpet/view/animals/animal_status_page.dart';
 import 'package:anshinpet/view/animals/animal_type_page.dart';
+import 'package:anshinpet/view/configuration_page.dart';
 import 'package:anshinpet/view/login_page.dart';
 import 'package:anshinpet/view/animal_page.dart';
+import 'package:anshinpet/view/medications/medication_page.dart';
 import 'package:anshinpet/view/splash/splash_page.dart';
 
 import 'package:anshinpet/configs/routes/routes_name.dart';
@@ -25,6 +27,12 @@ class Routes {
       case RoutesName.animalStatus:
         return MaterialPageRoute(
             builder: (BuildContext context) => AnimalStatusPage());
+      case RoutesName.medication:
+        return MaterialPageRoute(
+          builder: (BuildContext context) => MedicationPage());
+      case RoutesName.settings:
+        return MaterialPageRoute(
+          builder: (BuildContext context) => ConfigurationsPage());
       default:
         return MaterialPageRoute(builder: (_) {
           return Scaffold(

@@ -90,18 +90,26 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: height * .085),
               RoundButton(
-                title: 'Entrar', 
+                title: 'Entrar',
                 loading: authViewMode.loading,
-                onPress: (){
+                onPress: () {
                   if (_formKey.currentState?.validate() ?? false) {
                     Map data = {
-                      'email': _emailController.text.toString(),
-                      'password': _passwordController.text.toString()
+                      'email': _emailController.text.trim(),
+                      'password': _passwordController.text.trim(),
                     };
                     authViewMode.loginApi(data, context);
                   }
-                }
+                },
               ),
+              if (authViewMode.errorMessage != null) ...[
+                const SizedBox(height: 12),
+                Text(
+                  authViewMode.errorMessage!,
+                  style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ],
           ),
         ),

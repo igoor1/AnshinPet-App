@@ -14,7 +14,7 @@ class VaccinePage extends StatefulWidget {
 }
 
 class _VaccinePageState extends State<VaccinePage> {
-   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -34,33 +34,33 @@ class _VaccinePageState extends State<VaccinePage> {
   Widget build(BuildContext context) {
     final vaccineViewModel = Provider.of<VaccineViewModel>(context);
     return Scaffold(
-      appBar: AppbarCustom(),
+      appBar: const AppbarCustom(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "vacinas",
+              "Vacinas",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w700,
-                color: AppColors.primary
+                color: AppColors.primary,
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Buscar vacinas...',
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
+                decoration: InputDecoration(
+                  hintText: 'Buscar vacinas...',
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
-                  onChanged: (value) {
-                    vaccineViewModel.filterVaccines(value);
+                ),
+                onChanged: (value) {
+                  vaccineViewModel.filterVaccines(value);
                 },
               ),
             ),
@@ -68,7 +68,7 @@ class _VaccinePageState extends State<VaccinePage> {
             Expanded(
               child: Consumer<VaccineViewModel>(
                 builder: (context, viewModel, child) {
-                  if(viewModel.loading){
+                  if (viewModel.loading) {
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (viewModel.error != null) {
@@ -84,24 +84,22 @@ class _VaccinePageState extends State<VaccinePage> {
                       return VaccineCard(vaccine: vaccine);
                     },
                   );
-                }
-              )
-            )
+                },
+              ),
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-              onPressed: () => Navigator.push(
-                context, 
-                MaterialPageRoute(
-                  builder: (context) => NewVaccinePage()
-                )
-              ), 
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              shape: CircleBorder(),
-              child: Icon(Icons.add),
-            )
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NewVaccinePage()),
+        ),
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

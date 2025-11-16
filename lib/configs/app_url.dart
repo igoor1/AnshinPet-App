@@ -26,4 +26,8 @@ class AppUrl {
   static var fetchAnimalStatus = "$baseUrl/api/status";
 
   static var fetchAnimalTypes = "$baseUrl/api/types";
+
+  static var medicationUrl = '$baseUrl/api/medications';
+
+  static String deleteMedications(int id) => '$baseUrl/api/medications/$id';
 }

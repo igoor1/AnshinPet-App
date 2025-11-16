@@ -39,31 +39,27 @@ class DrawerCustom extends StatelessWidget {
               Navigator.of(context).pop();
               Navigator.push(context, MaterialPageRoute(builder: (context) => const VaccinePage()));
           }),
-          
-          ListTileElement(Icons.pets, 'Tipos de Animais',
+          ListTileElement(Icons.medical_services, 'Medicação',
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.pushNamed(context, RoutesName.medication);
+          }),
+          ListTileElement(Icons.category, 'Tipos de Animais',
             onTap: () {
               Navigator.of(context).pop();
               Navigator.pushNamed(context, RoutesName.animalType);
-            }),
-          ListTileElement(Icons.bookmark_border, 'Status de Animais',
+          }),
+          ListTileElement(Icons.check_circle, 'Status de Animais',
             onTap: () {
               Navigator.of(context).pop(); 
               Navigator.pushNamed(context, RoutesName.animalStatus);
-            }),
-          
-          ListTileElement(Icons.group, 'Cuidadores',
-            onTap: () {
-              Navigator.of(context).pop();
-            }),
+          }),
           ListTileElement(Icons.settings, 'Configurações',
             onTap: () {
               Navigator.of(context).pop();
-            }),
+              Navigator.pushNamed(context, RoutesName.settings);
+          }),
           Divider(),
-          ListTileElement(Icons.question_mark, 'Ajuda',
-            onTap: () {
-              Navigator.of(context).pop();
-            }),
           ListTileElement(
             Icons.logout,
             'Sair', 

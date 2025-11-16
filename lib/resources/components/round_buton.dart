@@ -24,8 +24,8 @@ class RoundButton extends StatelessWidget {
         child: Center(
           child: loading 
           ? SizedBox(
-            height: 24, // Define altura
-            width: 24,  // Define largura
+            height: 24,
+            width: 24, 
             child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
           ) 
           : Text(title, style: TextStyle(color: Colors.white),

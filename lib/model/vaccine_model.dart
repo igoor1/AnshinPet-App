@@ -1,27 +1,26 @@
-class VaccineModel {
+class Vaccine {
   final int id;
   final String name;
-  final String producer;
+  final String manufacturer;
 
-  VaccineModel({
+  Vaccine({
     required this.id,
     required this.name,
-    required this.producer,
+    required this.manufacturer,
   });
 
-  factory VaccineModel.fromJson(Map<String, dynamic> json) {
-    return VaccineModel(
-      id: json['id'] ?? 0,
-      name: json['nome'] ?? 'Nome indisponível',
-      producer: json['fabricante'] ?? 'Descrição não disponível.',
+  factory Vaccine.fromJson(Map<String, dynamic> json) {
+    return Vaccine(
+      id: json["id"],
+      name: json["name"],
+      manufacturer: json["manufacturer"],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'nome': name, 
-      'fabricante': producer,
+      "name": name,
+      "manufacturer": manufacturer,
     };
   }
 }

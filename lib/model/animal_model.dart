@@ -1,49 +1,50 @@
+import 'package:anshinpet/model/animal_status_model.dart';
+import 'package:anshinpet/model/animal_type_model.dart';
+
 class AnimalModel {
-  int? id;
-  String? nome;
-  String? sexo;
-  String? tipo;
-  String? cor;
-  String? porte;
-  String? castrado;
-  String? adocao;
-  String? raca;
+  final int? id;
+  final String? name;
+  final String? color;
+  final String? gender;
+  final String? birthDate;
+  final String? breed;
+  final String? description;
+  final String? rescueDate;
+  final AnimalTypeModel? animalType;
+  final AnimalStatusModel? animalStatus;
 
   AnimalModel({
     this.id,
-    this.nome,
-    this.sexo,
-    this.tipo,
-    this.cor,
-    this.porte,
-    this.castrado,
-    this.adocao,
-    this.raca
+    this.name,
+    this.color,
+    this.gender,
+    this.birthDate,
+    this.breed,
+    this.description,
+    this.rescueDate,
+    this.animalType,
+    this.animalStatus,
   });
 
-  AnimalModel.fromJson(Map<String, dynamic> json){
-    id = json['id'];
-    nome = json['nome'];
-    sexo = json['sexo'];
-    tipo = json['tipo'];
-    cor = json['cor'];
-    porte = json['porte'];
-    castrado = json['castrado'];
-    adocao = json['adocao'];
-    raca = json['raca'];
-  }
+  factory AnimalModel.fromJson(Map<String, dynamic> json) {
+    return AnimalModel(
+      // Mapeamento direto
+      id: json['id'],
+      name: json['name'],
+      color: json['color'],
+      gender: json['gender'],
+      breed: json['breed'],
+      description: json['description'],
+      
+      birthDate: json['birth_date'],
+      rescueDate: json['rescue_date'],
 
-  Map<String, dynamic> toJson(){
-    return{
-      'id': id,
-      'nome': nome,
-      'sexo': sexo,
-      'tipo': tipo,
-      'cor': cor,
-      'porte': porte,
-      'castrado': castrado,
-      'adocao': adocao,
-      'raca': raca
-    };
+      animalType: json['animalType'] != null
+          ? AnimalTypeModel.fromJson(json['animalType'])
+          : null,
+      animalStatus: json['animalStatus'] != null
+          ? AnimalStatusModel.fromJson(json['animalStatus'])
+          : null,
+    );
   }
 }

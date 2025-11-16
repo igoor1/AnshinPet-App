@@ -1,9 +1,8 @@
-import 'package:anshinpet/view/donation_page.dart';
-import 'package:anshinpet/view/donations/new_donation_page.dart';
-import 'package:anshinpet/view/home_page.dart';
+import 'package:anshinpet/view/animals/animal_status_page.dart';
+import 'package:anshinpet/view/animals/animal_type_page.dart';
 import 'package:anshinpet/view/login_page.dart';
 import 'package:anshinpet/view/animal_page.dart';
-import 'package:anshinpet/view/splash_page.dart';
+import 'package:anshinpet/view/splash/splash_page.dart';
 
 import 'package:anshinpet/configs/routes/routes_name.dart';
 import 'package:flutter/material.dart';
@@ -17,18 +16,15 @@ class Routes {
       case RoutesName.login:
         return MaterialPageRoute(
             builder: (BuildContext context) => LoginPage());
-      case RoutesName.home:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => HomePage());
       case RoutesName.animal:
         return MaterialPageRoute(
             builder: (BuildContext context) => AnimalPage());
-      case RoutesName.donation:
+      case RoutesName.animalType:
         return MaterialPageRoute(
-            builder: (BuildContext context) => DonationPage());
-      case RoutesName.newDonation:
+            builder: (BuildContext context) => AnimalTypePage());
+      case RoutesName.animalStatus:
         return MaterialPageRoute(
-            builder: (BuildContext context) => NewDonationPage());
+            builder: (BuildContext context) => AnimalStatusPage());
       default:
         return MaterialPageRoute(builder: (_) {
           return Scaffold(

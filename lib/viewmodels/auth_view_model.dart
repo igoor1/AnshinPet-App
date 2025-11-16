@@ -6,13 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AuthViewModel with ChangeNotifier {
-
-    final _authRepo = AuthRepository();
+  final _authRepo = AuthRepository();
 
   bool _loading = false;
   bool get loading => _loading;
 
-  setLoading(bool value){
+  setLoading(bool value) {
     _loading = value;
     notifyListeners();
   }
@@ -22,7 +21,6 @@ class AuthViewModel with ChangeNotifier {
     try {
       var value = await _authRepo.loginApi(data);
       final tokenValue = Provider.of<TokenViewModel>(context, listen: false);
-
       await tokenValue.saveToken(value);
 
       setLoading(false);
@@ -30,7 +28,7 @@ class AuthViewModel with ChangeNotifier {
       if (context.mounted) {
         Navigator.pushNamedAndRemoveUntil(
           context,
-          RoutesName.home,
+          RoutesName.animal,
           (route) => false,
         );
       }
@@ -38,7 +36,20 @@ class AuthViewModel with ChangeNotifier {
       if (kDebugMode) print(value.toString());
     } catch (e) {
       setLoading(false);
-      throw Exception(e);
+      rethrow;
+    }
+  }
+
+  Future<void> logout(BuildContext context) async {
+    final tokenValue = Provider.of<TokenViewModel>(context, listen: false);
+
+    await tokenValue.remove();
+    if (context.mounted) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        RoutesName.login,
+        (route) => false,
+      );
     }
   }
 }

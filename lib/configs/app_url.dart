@@ -3,41 +3,27 @@ class AppUrl {
 
   static var loginUrl = '$baseUrl/api/auth/signin';
 
-  static var quantityAnimals = '$baseUrl/api/animais/quantidade';
+  static var diseaseUrl = '$baseUrl/api/diseases';
 
-  static var quantityDogs = '$baseUrl/api/animais/quantidade/C';
+  static String deleteDisease(int id) => '$baseUrl/api/diseases/$id';
 
-  static var quantityCats = '$baseUrl/api/animais/quantidade/G';
+  static var vaccineUrl = '$baseUrl/api/vaccines';
 
-  static var quantityBirds = '$baseUrl/api/animais/quantidade/A';
+  static String deleteVaccine(int id) => '$baseUrl/api/vaccines/$id';
 
-  static var quantityAdoption = '$baseUrl/api/animais/quantidade/A';
+  static var fetchAnimals = '$baseUrl/api/animals';
 
-  static var quantityUsers = '$baseUrl/api/usuarios/quantidade';
+  static var createAnimal = '$baseUrl/api/animals';
 
-  static var quantityDonations = '$baseUrl/api/doacoes/quantidade/racao';
+  static String updateAnimal(int id) => '$baseUrl/api/animals/$id';
 
-  static var quantityMoney = '$baseUrl/api/doacoes/quantidade/dinheiro';
+  static String deleteAnimal(int id) => '$baseUrl/api/animals/$id';
+  
+  static String uploadAnimalImage(int animalId) => '$baseUrl/api/animals/$animalId/image';
 
-  static String fetchDonate(String type) => '$baseUrl/api/doacoes/listar/$type';
+  static String animalImageUrl(int animalId) => "$baseUrl/api/animals/$animalId/image";
 
-  static var createDonation = '$baseUrl/api/doacoes';
+  static var fetchAnimalStatus = "$baseUrl/api/status";
 
-  static String deleteDonation(int id) => '$baseUrl/api/doacoes/$id';
-
-  static String updateDonation(int id) => '$baseUrl/api/doacoes/$id';
-
-  static var diseaseUrl = '$baseUrl/api/doencas';
-
-  static String updateDisease(int id) => '$baseUrl/api/doencas/$id';
-
-  static String deleteDisease(int id) => '$baseUrl/api/doencas/$id';
-
-  static var vaccineUrl = '$baseUrl/api/vacinas';
-
-  static String updateVaccine(int id) => '$baseUrl/api/vacinas/$id';
-
-  static String deleteVaccine(int id) => '$baseUrl/api/vacinas/$id';
-
-  static var fetchAnimals = '$baseUrl/api/animais';
+  static var fetchAnimalTypes = "$baseUrl/api/types";
 }

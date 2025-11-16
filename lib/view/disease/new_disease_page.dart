@@ -13,28 +13,42 @@ class NewDiseasePage extends StatefulWidget {
 
 class _NewDiseasePageState extends State<NewDiseasePage> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _severityController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     _nameController.dispose();
-    _descriptionController.dispose();
+    _severityController.dispose();
     super.dispose();
   }
 
-  String _getSeverityCodeFromText(String? inputText) {
-    if (inputText == null) return '';
-    final lowercasedInput = inputText.toLowerCase().trim();
-    switch (lowercasedInput) {
-      case 'alta': case 'Alta':
-        return 'A';
-      case 'media': case 'Media': case 'm':
-        return 'M';
-      case 'baixa': case 'Baixa':
-        return 'B';
-      default:
-        return '';
+  String _getSeverityCodeFromText(String? text) {
+    if (text == null) return "";
+
+    final normalized = text.trim().toUpperCase();
+
+    if (normalized.contains("ALTA")) return "ALTA";
+    if (normalized.contains("MEDIA") || normalized.contains("MÉDIA")) return "MEDIA";
+    if (normalized.contains("BAIXA")) return "BAIXA";
+
+    return "";
+  }
+
+  void _createDisease() async {
+    if (_formKey.currentState!.validate()) {
+
+      final severityCode = _getSeverityCodeFromText(_severityController.text);
+
+      final newDisease = {
+        "name": _nameController.text,
+        "severity": severityCode,
+      };
+
+      await Provider.of<DiseaseViewModel>(context, listen: false)
+          .createDisease(newDisease);
+
+      Navigator.pop(context);
     }
   }
 
@@ -43,47 +57,73 @@ class _NewDiseasePageState extends State<NewDiseasePage> {
     return Scaffold(
       appBar: AppbarCustom(),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const Text(
+                "Cadastrar Nova Doença",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(124, 84, 217, 1),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // --- INPUT NOME ---
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
                   labelText: 'Nome da Doença',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
+                  prefixIcon: const Icon(Icons.assignment_outlined,
+                      color: Color.fromRGBO(124, 84, 217, 1)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira um nome.';
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    (value == null || value.isEmpty) ? 'Insira um nome.' : null,
               ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 20),
+
+              // --- INPUT GRAVIDADE ---
               TextFormField(
-                controller: _descriptionController,
+                controller: _severityController,
                 decoration: InputDecoration(
-                  labelText: 'Gravidade (Alta, Média ou Baixa)',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
+                  labelText: 'Gravidade (ALTA, MEDIA, BAIXA)',
+                  prefixIcon: const Icon(Icons.warning_amber_rounded,
+                      color: Color.fromRGBO(124, 84, 217, 1)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
                 ),
                 validator: (value) {
                   if (_getSeverityCodeFromText(value).isEmpty) {
-                    return 'Insira Alta, Media ou Baixa.';
+                    return 'Insira Alta, Média ou Baixa.';
                   }
                   return null;
                 },
               ),
-              const SizedBox(height: 30.0),
+
+              const SizedBox(height: 30),
+
+              // --- BOTÃO ---
               ElevatedButton.icon(
-                label: const Text('Cadastrar Doença'),
+                icon: const Icon(Icons.check_circle_outline),
+                label: const Text(
+                  'Cadastrar Doença',
+                  style: TextStyle(fontSize: 16),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
                   foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
                 onPressed: _createDisease,
               ),
@@ -92,21 +132,5 @@ class _NewDiseasePageState extends State<NewDiseasePage> {
         ),
       ),
     );
-  }
-  
-   void _createDisease() {
-    if (_formKey.currentState!.validate()) {
-      final severityCode = _getSeverityCodeFromText(_descriptionController.text);
-      
-      final newDiseaseData = {
-        'nome': _nameController.text,
-        'gravidade': severityCode,
-      };
-      
-      Provider.of<DiseaseViewModel>(context, listen: false)
-          .createDisease(newDiseaseData);
-
-      Navigator.pop(context);
-    }
   }
 }

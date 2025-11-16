@@ -1,29 +1,26 @@
-
-
 class DiseaseModel {
   final int id;
   final String name;
-  final String description;
+  final String severity;
 
   DiseaseModel({
     required this.id,
     required this.name,
-    required this.description,
+    required this.severity,
   });
 
   factory DiseaseModel.fromJson(Map<String, dynamic> json) {
     return DiseaseModel(
       id: json['id'] ?? 0,
-      name: json['nome'] ?? 'Nome indisponível',
-      description: json['gravidade'] ?? 'Descrição não disponível.',
+      name: json['name'] ?? 'Nome indisponível',
+      severity: json['severity'] ?? 'BAIXA',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'nome': name, 
-      'gravidade': description,
+      "name": name,
+      "severity": severity,
     };
   }
 }

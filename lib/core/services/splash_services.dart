@@ -18,7 +18,7 @@ class SplashServices {
       } else {
         Timer(
           Duration(seconds: 3),
-          ()=> Navigator.pushNamed(context, RoutesName.home)
+          ()=> Navigator.pushNamed(context, RoutesName.animal)
         );
       }
     }).onError((error, stackTrace){

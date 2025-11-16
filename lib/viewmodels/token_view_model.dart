@@ -5,9 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TokenViewModel with ChangeNotifier {
 
   Future<bool> saveToken(TokenModel user) async {
-
     final SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setString('token', user.token.toString()); 
+
+    if (user.token != null) {
+      await sp.setString('token', user.token!);
+    } else {
+    await sp.remove('token');
+    }
     notifyListeners();
     return true;
   }
@@ -17,13 +21,13 @@ class TokenViewModel with ChangeNotifier {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     final String? token = sp.getString('token');
     return TokenModel(
-      token: token.toString()
+      token: token 
     );
   }
 
   Future<bool> remove() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.remove('token');
+    await sp.remove('token');
     return true;
   } 
 }

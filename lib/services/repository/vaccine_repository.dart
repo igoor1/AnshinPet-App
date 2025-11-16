@@ -12,11 +12,6 @@ class VaccineRepository {
     return response;
   }
 
-  Future<Map<String, dynamic>> updateVaccine(VaccineModel data) async {
-    final response = await _apiServices.putApiResponse(AppUrl.updateVaccine(data.id), data);
-    return response;
-  }
-
   Future<Map<String, dynamic>> createVaccine(Map<String, dynamic> data) async {
     final response = await _apiServices.getAuthPostApiResponse(AppUrl.vaccineUrl, data);
     return response;

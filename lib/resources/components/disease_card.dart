@@ -1,6 +1,7 @@
 import 'package:anshinpet/model/disease_model.dart';
-import 'package:anshinpet/view/disease/disease_edit_page.dart';
+import 'package:anshinpet/viewmodels/disease_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DiseaseCard extends StatelessWidget {
   final DiseaseModel disease;
@@ -10,126 +11,127 @@ class DiseaseCard extends StatelessWidget {
     required this.disease,
   });
 
-  String _getSeverityText(String code) {
-    switch (code) {
-      case 'A':
-        return 'Alta';
-      case 'M':
-        return 'Média';
-      case 'B':
-        return 'Baixa';
-      default:
-        return 'Não informada'; 
-    }
-  }
-
   Color _getSeverityColor(String code) {
     switch (code.toUpperCase()) {
-      case 'A':
-        return Colors.red.shade400; 
-      case 'M':
+      case 'ALTA':
+        return Colors.red.shade400;
+      case 'MEDIA':
         return Colors.orange.shade400;
-      case 'B':
+      case 'BAIXA':
         return Colors.green.shade400;
       default:
         return Colors.grey;
     }
   }
 
+  void _confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Excluir Doença"),
+        content: Text("Deseja realmente excluir '${disease.name}'?"),
+        actions: [
+          TextButton(
+            child: const Text("Cancelar"),
+            onPressed: () => Navigator.pop(ctx),
+          ),
+          TextButton(
+            child: Text(
+              "Excluir",
+              style: TextStyle(color: Colors.red.shade700),
+            ),
+            onPressed: () async {
+              Navigator.pop(ctx);
+
+              await Provider.of<DiseaseViewModel>(context, listen: false)
+                  .deleteDisease(disease.id);
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => {
-        Navigator.push(
-          context, 
-          MaterialPageRoute(
-            builder: (context) => DiseaseEditPage(disease: disease)
-          )
-        )
-      },
-      child: Card(
-        elevation: 2.0,
-        shadowColor: Colors.deepPurple.shade50, 
-        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.assignment_outlined,
-                    color: Color.fromRGBO(124, 84, 217, 1),
-                    size: 20.0,
-                  ),
-                  const SizedBox(width: 8.0),
-                  Flexible(
-                    child: Text(
+    return Card(
+      elevation: 2.0,
+      shadowColor: Colors.deepPurple.shade50,
+      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.assignment_outlined,
+                      color: Color.fromRGBO(124, 84, 217, 1),
+                      size: 20.0,
+                    ),
+                    const SizedBox(width: 8.0),
+                    Text(
                       disease.name,
                       style: const TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                         color: Color.fromRGBO(124, 84, 217, 1),
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete_outline, color: Colors.red.shade600),
+                  onPressed: () => _confirmDelete(context),
+                )
+              ],
+            ),
+
+            const Divider(
+              height: 24.0,
+              thickness: 0.5,
+              color: Color.fromARGB(255, 230, 221, 248),
+            ),
+
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+              decoration: BoxDecoration(
+                color: _getSeverityColor(disease.severity).withOpacity(0.15),
+                borderRadius: BorderRadius.circular(20.0),
               ),
-              const Divider(
-                height: 24.0,
-                thickness: 0.5,
-                color: Color.fromARGB(255, 230, 221, 248), 
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [ 
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                    width: 8,
+                    height: 8,
                     decoration: BoxDecoration(
-                      color: _getSeverityColor(disease.description).withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(20.0),
+                      color: _getSeverityColor(disease.severity),
+                      shape: BoxShape.circle,
                     ),
-                    child: Row( 
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: _getSeverityColor(disease.description),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: 6.0),
-                        Text(
-                          _getSeverityText(disease.description),
-                          style: TextStyle(
-                            color: _getSeverityColor(disease.description),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          )
-                        )
-                      ]
-                    )
                   ),
+                  const SizedBox(width: 6.0),
                   Text(
-                    'Ver mais',
+                    disease.severity,
                     style: TextStyle(
-                      fontWeight: FontWeight.w600
+                      color: _getSeverityColor(disease.severity),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
                     ),
-                  )
+                  ),
                 ],
               ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );

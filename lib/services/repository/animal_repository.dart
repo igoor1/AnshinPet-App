@@ -6,7 +6,8 @@ import 'package:anshinpet/services/network/NetworkApiService.dart';
 class AnimalRepository {
   final BaseApiServices _apiServices = NetworkApiService();
 
-Future<dynamic> fetchAnimals({int page = 0, int limit = 12}) async {
+  // --- Animais ---
+  Future<dynamic> fetchAnimals({int page = 0, int limit = 12}) async {
     final String url = '${AppUrl.fetchAnimals}?page=$page&size=$limit';
     final response = await _apiServices.getAuthApiResponse(url);
     return response;
@@ -14,7 +15,6 @@ Future<dynamic> fetchAnimals({int page = 0, int limit = 12}) async {
 
   Future<Map<String, dynamic>> createAnimal(Map<String, dynamic> data) async {
     final response = await _apiServices.getAuthPostApiResponse(AppUrl.createAnimal, data);
-
     return response;
   }
 
@@ -27,19 +27,38 @@ Future<dynamic> fetchAnimals({int page = 0, int limit = 12}) async {
     await _apiServices.deleteApiResponse(AppUrl.deleteAnimal(id));
   }
 
-  // --- CORREÇÃO AQUI ---
   Future<Map<String, dynamic>> uploadAnimalImage(
     int animalId, 
-    File imageFile,   // Trocado de 'bytes/filename' para 'File'
-    String? description
+    File imageFile,
+    String? description,
   ) async {
-    
     final response = await _apiServices.multipartRequestApiResponse(
-      'PUT', // Usa o método PUT
+      'PUT',
       AppUrl.uploadAnimalImage(animalId),
-      imageFile, // Passa o objeto File
+      imageFile,
       description != null ? {'description': description} : null,
     );
+    return response;
+  }
+
+  // --- Vacinas do animal ---
+  Future<List<dynamic>> fetchAnimalVaccines(int animalId) async {
+    final String url = '${AppUrl.baseUrl}/api/animals/$animalId/vaccines';
+    final response = await _apiServices.getAuthApiResponse(url);
+    return response;
+  }
+
+  // --- Doenças do animal ---
+  Future<List<dynamic>> fetchAnimalDiseases(int animalId) async {
+    final String url = '${AppUrl.baseUrl}/api/animals/$animalId/diseases';
+    final response = await _apiServices.getAuthApiResponse(url);
+    return response;
+  }
+
+  // --- Medicações do animal ---
+  Future<List<dynamic>> fetchAnimalMedications(int animalId) async {
+    final String url = '${AppUrl.baseUrl}/api/animals/$animalId/medications';
+    final response = await _apiServices.getAuthApiResponse(url);
     return response;
   }
 }

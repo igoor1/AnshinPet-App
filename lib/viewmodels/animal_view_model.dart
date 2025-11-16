@@ -173,6 +173,39 @@ Future<AnimalModel?> uploadAnimalImage(
     }
   }
 
+  Future<List<dynamic>> fetchAnimalVaccines(int animalId) async {
+    try {
+      final vaccines = await _animalRepository.fetchAnimalVaccines(animalId);
+      return vaccines;
+    } catch (e) {
+      if (kDebugMode) print("Erro ao buscar vacinas: $e");
+      _error = e.toString();
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> fetchAnimalDiseases(int animalId) async {
+    try {
+      final diseases = await _animalRepository.fetchAnimalDiseases(animalId);
+      return diseases;
+    } catch (e) {
+      if (kDebugMode) print("Erro ao buscar doenças: $e");
+      _error = e.toString();
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> fetchAnimalMedications(int animalId) async {
+    try {
+      final medications = await _animalRepository.fetchAnimalMedications(animalId);
+      return medications;
+    } catch (e) {
+      if (kDebugMode) print("Erro ao buscar medicações: $e");
+      _error = e.toString();
+      return [];
+    }
+  }
+
   void clearError() {
     _error = null;
     notifyListeners();

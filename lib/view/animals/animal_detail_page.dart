@@ -1,29 +1,26 @@
 import 'package:anshinpet/configs/app_url.dart';
 import 'package:anshinpet/configs/theme/app_colors.dart';
-import 'package:anshinpet/data/app_exceptions.dart';
 import 'package:anshinpet/model/animal_model.dart';
 import 'package:anshinpet/resources/components/appbar_custom.dart';
-import 'package:anshinpet/viewmodels/animal_view_model.dart';
-import 'package:anshinpet/viewmodels/auth_view_model.dart';
-import 'package:anshinpet/viewmodels/token_view_model.dart';
 import 'package:anshinpet/view/animals/edit_animal_page.dart';
-import 'package:flutter/foundation.dart';
+import 'package:anshinpet/viewmodels/animal_view_model.dart';
+import 'package:anshinpet/viewmodels/token_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class AnimalDetailPage extends StatefulWidget {
+  final AnimalModel animal;
   const AnimalDetailPage({super.key, required this.animal});
-
-  final AnimalModel animal; // O animal inicial
 
   @override
   State<AnimalDetailPage> createState() => _AnimalDetailPageState();
 }
 
 class _AnimalDetailPageState extends State<AnimalDetailPage> {
-  String? _token;
   late AnimalModel _currentAnimal;
+  String? _token;
+  bool _isPanelOpen = false;
 
   @override
   void initState() {
@@ -39,6 +36,12 @@ class _AnimalDetailPageState extends State<AnimalDetailPage> {
         _token = tokenModel.token;
       });
     }
+  }
+
+  void _togglePanel() {
+    setState(() {
+      _isPanelOpen = !_isPanelOpen;
+    });
   }
 
   String _formatDate(String? dateString) {
@@ -65,109 +68,35 @@ class _AnimalDetailPageState extends State<AnimalDetailPage> {
     }
   }
 
-  void _showDeleteConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Confirmar Exclusão'),
-          content: Text('Deseja realmente excluir ${_currentAnimal.name ?? 'este animal'}?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancelar'),
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(foregroundColor: Colors.red.shade700),
-              child: const Text('Excluir'),
-              onPressed: () async {
-                Navigator.of(dialogContext).pop();
-                final viewModel = Provider.of<AnimalViewModel>(context, listen: false);
-                try {
-                  final success = await viewModel.deleteAnimal(_currentAnimal.id!);
-
-                  if (mounted) {
-                    if (success) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Animal excluído com sucesso!'),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                      Navigator.of(context).pop();
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(viewModel.error ?? 'Erro ao excluir animal'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  }
-                } on UnauthorizedException catch (_) {
-                  if (mounted) {
-                    await Provider.of<AuthViewModel>(context, listen: false).logout(context);
-                  }
-                } catch (e) {
-                  if (kDebugMode) {
-                    print("Erro na exclusão do animal: $e");
-                  }
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Erro ao excluir: ${e.toString()}'),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // --- 1. NOVO MÉTODO PARA MOSTRAR IMAGEM EM TELA CHEIA ---
   void _showFullScreenImage(BuildContext context) {
-    // Tag única para a animação Hero
     final heroTag = 'animalImage-${_currentAnimal.id}';
-
     showDialog(
       context: context,
       barrierColor: Colors.black.withOpacity(0.8),
-      builder: (BuildContext dialogContext) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.of(dialogContext).pop(); 
-          },
-          child: Center(
-            child: InteractiveViewer(
-              panEnabled: true,
-              minScale: 1.0,
-              maxScale: 4.0,
-              child: Hero( 
-                tag: heroTag,
-                child: Image.network(
-                  AppUrl.animalImageUrl(_currentAnimal.id!),
-                  headers: {'Authorization': 'Bearer $_token'},
-                  fit: BoxFit.contain,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(child: CircularProgressIndicator(color: Colors.white));
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Icons.image_not_supported, size: 100, color: Colors.white);
-                  },
-                ),
+      builder: (_) => GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Center(
+          child: InteractiveViewer(
+            panEnabled: true,
+            minScale: 1.0,
+            maxScale: 4.0,
+            child: Hero(
+              tag: heroTag,
+              child: Image.network(
+                AppUrl.animalImageUrl(_currentAnimal.id!),
+                headers: {'Authorization': 'Bearer $_token'},
+                fit: BoxFit.contain,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(child: CircularProgressIndicator(color: Colors.white));
+                },
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.image_not_supported, size: 100, color: Colors.white),
               ),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -181,200 +110,231 @@ class _AnimalDetailPageState extends State<AnimalDetailPage> {
       );
     }
 
+    final screenWidth = MediaQuery.of(context).size.width;
     final heroTag = 'animalImage-${_currentAnimal.id}';
+    final panelWidth = screenWidth * 0.65;
+    
+    // Calcula a posição para o botão
+    final buttonRightPosition = _isPanelOpen ? panelWidth : 0; 
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppbarCustom(),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              margin: const EdgeInsets.only(bottom: 20),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
+        children: [
+          // --- 1. Conteúdo principal (ESTÁTICO, não se move e fica embaixo) ---
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildAnimalInfo(heroTag),
+                const SizedBox(height: 16),
+                _buildInfoCard(
+                  'Informações Básicas',
+                  [
+                    _buildInfoRow('Raça', _currentAnimal.breed ?? 'Não informada'),
+                    _buildInfoRow('Cor', _currentAnimal.color ?? 'Não informada'),
+                    _buildInfoRow('Gênero', _getGenderText(_currentAnimal.gender)),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                _buildInfoCard(
+                  'Datas',
+                  [
+                    _buildInfoRow('Nascimento', _formatDate(_currentAnimal.birthDate)),
+                    _buildInfoRow('Resgate', _formatDate(_currentAnimal.rescueDate)),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                if (_currentAnimal.description != null && _currentAnimal.description!.isNotEmpty)
+                  _buildInfoCard('Descrição', [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        _currentAnimal.description!,
+                        style: TextStyle(fontSize: 14, color: Colors.grey[800]),
+                      ),
+                    )
+                  ]),
+                const SizedBox(height: 16),
+                Row(
                   children: [
-                    
-                    GestureDetector(
-                      onTap: () => _showFullScreenImage(context), 
-                      child: Hero( 
-                        tag: heroTag,
-                        child: Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            color: AppColors.primary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.primary, width: 1),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(11),
-                            child: Image.network(
-                              AppUrl.animalImageUrl(_currentAnimal.id!),
-                              fit: BoxFit.cover,
-                              headers: {'Authorization': 'Bearer $_token'},
-                              errorBuilder: (context, error, stackTrace) {
-                                return Center(
-                                  child: Icon(
-                                    Icons.image_not_supported,
-                                    size: 50,
-                                    color: AppColors.primary.withOpacity(0.6),
-                                  ),
-                                );
-                              },
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    value: loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress.cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              },
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => EditAnimalPage(animal: _currentAnimal),
                             ),
+                          );
+                          if (result != null && result is AnimalModel) {
+                            setState(() {
+                              _currentAnimal = result;
+                            });
+                          }
+                        },
+                        icon: const Icon(Icons.edit, size: 20),
+                        label: const Text('Editar', style: TextStyle(fontSize: 16)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),
                     ),
-                    // --- FIM DAS MUDANÇAS ---
-
                     const SizedBox(width: 16),
-                    // Nome e tipo do animal
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _currentAnimal.name ?? 'Nome Desconhecido',
-                            style: const TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
-                            ),
+                      child: ElevatedButton.icon(
+                        onPressed: () {}, // Função de deletar
+                        icon: const Icon(Icons.delete, size: 20),
+                        label: const Text('Excluir', style: TextStyle(fontSize: 16)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red.shade700,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          if (_currentAnimal.animalType != null)
-                            Text(
-                              _currentAnimal.animalType!.name,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                          const SizedBox(height: 8),
-                          if (_currentAnimal.animalStatus?.name != null)
-                            Chip(
-                              label: Text(
-                                _currentAnimal.animalStatus!.name,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              backgroundColor: AppColors.primary,
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            _buildInfoCard(
-              'Informações Básicas',
-              [
-                _buildInfoRow('Raça', _currentAnimal.breed ?? 'Não informada'),
-                _buildInfoRow('Cor', _currentAnimal.color ?? 'Não informada'),
-                _buildInfoRow('Gênero', _getGenderText(_currentAnimal.gender)),
               ],
             ),
-            const SizedBox(height: 16),
-            _buildInfoCard(
-              'Datas',
-              [
-                _buildInfoRow('Nascimento', _formatDate(_currentAnimal.birthDate)),
-                _buildInfoRow('Resgate', _formatDate(_currentAnimal.rescueDate)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            if (_currentAnimal.description != null && _currentAnimal.description!.isNotEmpty)
-              _buildInfoCard(
-                'Descrição',
-                [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                    child: Text(
-                      _currentAnimal.description!,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[800],
+          ),
+
+          // --- 2. Painel Lateral (Flutuante) ---
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            top: 0,
+            bottom: 0,
+            right: _isPanelOpen ? 0 : -panelWidth, // Desliza para a direita/esquerda
+            width: panelWidth,
+            child: Material(
+              elevation: 8,
+              color: Colors.white,
+              child: Column(
+                children: [
+                  Container(
+                    height: 56, 
+                    color: AppColors.primary,
+                    child: Center(
+                      child: Text(
+                        'Informações Médicas',
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildDataSection('Vacinas', 
+                                  context.read<AnimalViewModel>().fetchAnimalVaccines(_currentAnimal.id!)),
+                          const SizedBox(height: 20),
+                          _buildDataSection('Doenças', 
+                                  context.read<AnimalViewModel>().fetchAnimalDiseases(_currentAnimal.id!)),
+                          const SizedBox(height: 20),
+                          _buildDataSection('Medicações', 
+                                  context.read<AnimalViewModel>().fetchAnimalMedications(_currentAnimal.id!)),
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
-            if (_currentAnimal.description != null && _currentAnimal.description!.isNotEmpty)
-              const SizedBox(height: 16),
-            
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditAnimalPage(animal: _currentAnimal),
-                        ),
-                      );
-
-                      if (result != null && result is AnimalModel) {
-                        setState(() {
-                          _currentAnimal = result;
-                        });
-                      }
-                    },
-                    icon: const Icon(Icons.edit, size: 20),
-                    label: const Text('Editar', style: TextStyle(fontSize: 16)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () => _showDeleteConfirmationDialog(context),
-                    icon: const Icon(Icons.delete, size: 20),
-                    label: const Text('Excluir', style: TextStyle(fontSize: 16)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red.shade700,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
-            const SizedBox(height: 32),
+          ),
+
+          // --- 3. Botão lateral para abrir/fechar ---
+          Positioned(
+            top: 180,
+            right: _isPanelOpen ? panelWidth : 0, // A posição 'right' agora é o limite esquerdo do painel
+            child: GestureDetector(
+              onTap: _togglePanel,
+              child: Container(
+                width: 25,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: const BorderRadius.horizontal(left: Radius.circular(10)),
+                ),
+                child: Icon(
+                  _isPanelOpen ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
+                  color: Colors.white,
+                  size: 16,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --- MÉTODOS AUXILIARES ---
+  Widget _buildAnimalInfo(String heroTag) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            GestureDetector(
+              onTap: () => _showFullScreenImage(context),
+              child: Hero(
+                tag: heroTag,
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.primary, width: 1),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(11),
+                    child: Image.network(
+                      AppUrl.animalImageUrl(_currentAnimal.id!),
+                      headers: {'Authorization': 'Bearer $_token'},
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                            const Icon(Icons.pets, size: 60, color: AppColors.primary),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(_currentAnimal.name ?? 'Nome Desconhecido',
+                      style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: AppColors.primary)),
+                  if (_currentAnimal.animalType != null)
+                    Text(_currentAnimal.animalType!.name,
+                        style: TextStyle(fontSize: 18, color: Colors.grey[700])),
+                  const SizedBox(height: 8),
+                  if (_currentAnimal.animalStatus?.name != null)
+                    Chip(
+                      label: Text(_currentAnimal.animalStatus!.name,
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      backgroundColor: AppColors.primary,
+                    ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -384,58 +344,74 @@ class _AnimalDetailPageState extends State<AnimalDetailPage> {
   Widget _buildInfoCard(String title, List<Widget> children) {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
-              ),
-            ),
-            const Divider(height: 20, thickness: 1),
-            ...children,
-          ],
-        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary)),
+          const Divider(),
+          ...children
+        ]),
       ),
     );
   }
 
   Widget _buildInfoRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              '$label:',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
-                fontSize: 16,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: TextStyle(
-                color: Colors.grey[900],
-                fontSize: 16,
-              ),
-            ),
-          ),
+          SizedBox(width: 120, child: Text('$label:', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey[700]))),
+          Expanded(child: Text(value, style: TextStyle(color: Colors.grey[900]))),
         ],
       ),
+    );
+  }
+  
+  Widget _buildDataSection(String title, Future<List<dynamic>> futureData) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primary)),
+        const Divider(),
+        FutureBuilder<List<dynamic>>(
+          future: futureData, 
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return const Center(child: LinearProgressIndicator());
+              
+            if (snapshot.hasError) return Text('Erro ao carregar $title: ${snapshot.error}');
+            
+            final items = snapshot.data;
+            if (items == null || items.isEmpty) return Text('Sem $title registradas.');
+
+            return Column(
+              children: items.map((dynamic item) {
+                if (item == null || item is! Map<String, dynamic>) {
+                    return const SizedBox.shrink(); 
+                }
+                
+                String name = item['name'] ?? 'N/A';
+                String subtitle = '';
+                
+                if (title == 'Vacinas') {
+                  name = item['nome'] ?? item['name'] ?? 'Vacina sem nome';
+                  subtitle = 'Produtor: ${item['produtor'] ?? item['producer'] ?? 'N/A'}';
+                } else if (title == 'Doenças') {
+                  name = item['name'] ?? 'Doença sem nome';
+                  subtitle = 'Severidade: ${item['severity'] ?? 'N/A'}';
+                } else if (title == 'Medicações') {
+                  name = item['name'] ?? 'Medicação sem nome';
+                  subtitle = 'Dosagem: ${item['dosage'] ?? 'N/A'}';
+                }
+                
+                return ListTile(title: Text(name), subtitle: Text(subtitle));
+              }).toList(),
+            );
+          },
+        ),
+      ],
     );
   }
 }
